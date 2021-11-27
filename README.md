@@ -21,6 +21,7 @@ Its main characteristics are:
 * It is a live distro, designed to be resilient to frequent power outages, with read-only filesystems.
 * It can be used offline, with no internet connection.
 * It provides firmware upgrades and downgrades capabilities with no impact on installed applications.
+* It has two firmware partitions to select an alternate firmware for the next boot.
 * It can be used on edge devices, inside a control panel, or as an industrial router.
 * When used as a router, it can fully isolate all the connected devices from the internet and provide a secure, isolated network.
 * It provides port forwards to the connected devices when used as a router.
