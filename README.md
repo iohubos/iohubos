@@ -219,7 +219,7 @@ The Admin API is disabled by default. You need to set a strong password, in the 
 
 The admin API will be available at the port defined in the variable `IOHUBOS_ADMIN_API_SERVER_PORT`.
 
-The full API in OPenAPI 3.0 format is documented [`here`](hhttps://app.swaggerhub.com/apis-docs/iohubos/iohubos-admin-api/1.0.0).
+The full API in OpenAPI 3.0 format is documented [`here`](hhttps://app.swaggerhub.com/apis-docs/iohubos/iohubos-admin-api/1.0.0).
 
 ```bash
 IOHUBOS_ADMIN_API_ENABLED='false'           # enable admin API
@@ -414,7 +414,7 @@ networks:
 
 You can package your Docker application definition in a zip file and upload it to the `/iohub/deploy` folder to have it deployed on the next reboot.
 
-The structure of the zip file described below:
+The structure of the zip file is described below:
 
 ```text
 docker
@@ -552,22 +552,22 @@ The fourth partition is the writable partition. It is used to store any user dat
    |   |   |--> global/                # global applications
    |   |   |--> registry/              # internal Docker registry
    |   |--> envvars                    # configuration file
-   |   |--> firmware/                  # folder for automatic fw deployment
-   |   |--> forwards-tcp               # tcp forwards
-   |   |--> forwards-udp               # udp forwards
+   |   |--> firmware/                  # folder for automatic firmware deployment
+   |   |--> forwards-tcp               # tcp forwards definitions
+   |   |--> forwards-udp               # udp forwards definitions
    |   |--> live/                      # folder for live configuration. copied over / at boot
    |   |--> runtime/                   # folder for permanent data used by scripts
    |   |   |--> iohub-bootstrap/       # hooks definitions for iohub-boostrap
-   |   |   |--> iohub-registry         # folder for registry automatic import
+   |   |   |--> iohub-registry         # folder for Docker registry automatic import
    |--> usr
    |   |--> bin
-   |   |   |--> iohub-actions.d        # folder for boot scripts (read only)
+   |   |   |--> iohub-actions.d        # folder for iohub-bootstrap scripts (read only)
 ```
 
-### Additional commands
+### Commands reference
 
-* The command `iohub-install-firmware` can be used to install a new firmware manually on the next partition (partition 3 when partition 2 is the default, partition 2 otherwise).
-* The command `iohub-next-partition` returns the partition number, not in use (1 or 2, for partitions 2 and 3).
+* `iohub-install-firmware`: it can be used to install a new firmware manually on the next partition (partition 3 when partition 2 is the default, partition 2 otherwise).
+* `iohub-next-partition`: it returns the partition number, not in use (1 or 2, for partitions 2 and 3).
 
 ## License
 
