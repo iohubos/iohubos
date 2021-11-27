@@ -219,7 +219,7 @@ The Admin API is disabled by default. You need to set a strong password, in the 
 
 The admin API will be available at the port defined in the variable `IOHUBOS_ADMIN_API_SERVER_PORT`.
 
-The full API in OpenAPI 3.0 format is documented [`here`](hhttps://app.swaggerhub.com/apis-docs/iohubos/iohubos-admin-api/1.0.0).
+The full API in OpenAPI 3.0 format is documented [`here`](https://app.swaggerhub.com/apis-docs/iohubos/iohubos-admin-api/).
 
 ```bash
 IOHUBOS_ADMIN_API_ENABLED='false'           # enable admin API
