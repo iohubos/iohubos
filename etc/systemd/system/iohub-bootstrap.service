@@ -1,0 +1,15 @@
+[Unit]
+Description=IOhub bootstrap service
+After=network.target
+StartLimitIntervalSec=120
+StartLimitAction=reboot
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+Restart=no
+User=root
+ExecStart=/usr/bin/iohub-bootstrap.sh
+
+[Install]
+WantedBy=multi-user.target
