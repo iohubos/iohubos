@@ -63,7 +63,7 @@ IOHUBOS_FIREWALL_ROUTER_TO_INTERNET='false' # grant devices on router side acces
 IOHUBOS_ENGINE_REGISTRY_ENABLED='true'          # enable engine registry
 IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH0='false'     # registry accessible on eth0 side
 IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH1='false'     # registry accessible on eth1 side
-IOHUBOS_ENGINE_REGISTRY_RESCAN='false'          # force reload images from /var/lib/images at every restart
+IOHUBOS_ENGINE_REGISTRY_RESCAN='true'           # force reload images from /var/lib/images at every restart
 IOHUBOS_ENGINE_REGISTRY_RESCAN_DELETE='true'    # delete the image after the import in the registry
 
 ## === admin api ===
