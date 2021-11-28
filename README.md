@@ -193,7 +193,7 @@ You can disable the auto-upgrade/downgrade capability by setting the `IOHUBOS_UP
 
 #### Docker engine
 
-By setting the variable `IOHUBOS_ENGINE_ENABLED` to `true`, all the Docker functionalities described below are enabled. All the enabled user applications will be started upon boot.
+By setting the variable `IOHUBOS_DOCKER_ENABLED` to `true`, all the Docker functionalities described below are enabled. All the enabled user applications will be started upon boot.
 
 #### Docker applications deployment
 
@@ -205,11 +205,11 @@ The format/content of the deployable package is described in the [Docker applica
 
 #### Internal Docker registry
 
-By setting `IOHUBOS_ENGINE_REGISTRY_ENABLED` to `true`, an internal Docker registry will run on the IOhubOS instance. You can use it to allow the device to keep working even when internet access is not available, have a faster startup of applications, and minimize network traffic
+By setting `IOHUBOS_DOCKER_REGISTRY_ENABLED` to `true`, an internal Docker registry will run on the IOhubOS instance. You can use it to allow the device to keep working even when internet access is not available, have a faster startup of applications, and minimize network traffic
 
 The Docker images embedded in the firmware are by default already available in the registry. To add new images to the registry, read the [Docker registry](#docker-registry) section below.
 
-You can expose the internal Docker registry on ETH0 or ETH1 by setting to `true` the variables `IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH0` and `IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH1`.
+You can expose the internal Docker registry on ETH0 or ETH1 by setting to `true` the variables `IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH0` and `IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH1`.
 
 #### Admin API
 
@@ -269,16 +269,16 @@ where:
 
 ### Docker Registry
 
-The Docker registry is enabled by default. You can disable it by setting the variable `IOHUBOS_ENGINE_REGISTRY_ENABLED` to `false`.
+The Docker registry is enabled by default. You can disable it by setting the variable `IOHUBOS_DOCKER_REGISTRY_ENABLED` to `false`.
 
 You can add new images to the registry by:
 
-* setting to `true` the variable `IOHUBOS_ENGINE_REGISTRY_RESCAN`
+* setting to `true` the variable `IOHUBOS_DOCKER_REGISTRY_RESCAN`
 * copying a Docker image to the `/iohub/runtime/iohub-registry` directory of your IOhubOS instance and rebooting the system.
 
-When `IOHUBOS_ENGINE_REGISTRY_RESCAN` is `true`, the folder `/iohub/runtime/iohub-registry` will be scanned for new images and added to the registry.
+When `IOHUBOS_DOCKER_REGISTRY_RESCAN` is `true`, the folder `/iohub/runtime/iohub-registry` will be scanned for new images and added to the registry.
 
-if `IOHUBOS_ENGINE_REGISTRY_RESCAN_DELETE` is 'true', the image file is deleted, once imported to the registry.
+if `IOHUBOS_DOCKER_REGISTRY_RESCAN_DELETE` is 'true', the image file is deleted, once imported to the registry.
 
 #### Prepare the Docker images
 
@@ -568,6 +568,58 @@ The fourth partition is the writable partition. It is used to store any user dat
 
 * `iohub-install-firmware`: it can be used to install a new firmware manually on the next partition (partition 3 when partition 2 is the default, partition 2 otherwise).
 * `iohub-next-partition`: it returns the partition number, not in use (1 or 2, for partitions 2 and 3).
+
+## IOhubOS extension example: Logging to GCP
+
+As an example of how it is possible to modify the IOhubOS behavior, we will adjust the default Docker logging behavior, enabling logging to GCP.
+
+Based on the Docker instructions to implement the logging to GCP [here](https://docs.docker.com/config/containers/logging/gcplogs/),
+we create three files below the `/iohub/live` folder to have them copied over their correct location upon boot.
+
+1. `/iohub/live/etc/docker/daemon.json`: the Docker logging configuration file.
+2. `/iohub/live/etc/docker/googlecloud-serviceaccount.json`: the GCP credentials file.
+3. `/iohub/live/etc/systemd/system/diocker.service.d/gcplogging.conf`: the environment variable definition, to provide Docker the GCP credentials.
+
+daemon.json
+
+```json
+{
+  "log-driver": "gcplogs",
+  "log-opts": {
+    "gcp-project": "<your GCP project>",
+    "mode": "non-blocking",
+    "max-buffer-size": "50m"
+  }
+}
+
+```
+
+googlecloud-serviceaccount.json (generated on GCP, data hidden here)
+
+```json
+{
+  "type": "service_account",
+  "project_id": "<your GCP project>",
+  "private_key_id": "<...>",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n<...>\n-----END PRIVATE KEY-----\n",
+  "client_email": "<...>",
+  "client_id": "<...>",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/<...>"
+}
++
+```
+
+gcplogging.conf
+
+```text
+[Service]
+Environment="GOOGLE_APPLICATION_CREDENTIALS=/etc/docker/googlecloud-serviceaccount.json"
+```
+
+Reboot the system to apply the changes. Your Docker engine should now be logging to GCP.
 
 ## License
 

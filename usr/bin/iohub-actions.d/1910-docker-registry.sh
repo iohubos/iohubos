@@ -47,7 +47,7 @@ waitForRegistry() {
 
 [ -f /iohub/envvars ] && . /iohub/envvars
 
-if [[ "${IOHUBOS_ENGINE_ENABLED}" != "true" || "${IOHUBOS_ENGINE_REGISTRY_ENABLED}" != "true" ]]; then
+if [[ "${IOHUBOS_DOCKER_ENABLED}" != "true" || "${IOHUBOS_DOCKER_REGISTRY_ENABLED}" != "true" ]]; then
     exit 0
 fi
 
@@ -85,14 +85,14 @@ if [[ ! -f "/iohub/docker/registry.done" ]]; then
     touch "/iohub/docker/registry.done"
 fi
 
-if [[ -d /iohub/runtime/iohub-registry && ${IOHUBOS_ENGINE_REGISTRY_RESCAN} == "true" ]]; then
+if [[ -d /iohub/runtime/iohub-registry && ${IOHUBOS_DOCKER_REGISTRY_RESCAN} == "true" ]]; then
     waitForRegistry
 
     # add found images to registry
     for image in /iohub/runtime/iohub-registry/*.tar.gz ; do
         if [[ -f "${image}" ]]; then
             importImage "${image}"
-            if [[ ${IOHUBOS_ENGINE_REGISTRY_RESCAN_DELETE} == "true" ]]; then
+            if [[ ${IOHUBOS_DOCKER_REGISTRY_RESCAN_DELETE} == "true" ]]; then
                 rm -f "${image}"
             fi
         fi

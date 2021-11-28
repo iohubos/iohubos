@@ -4,8 +4,8 @@ IOHUBOS_TIMEZONE='America/Los_Angeles'
 IOHUBOS_OPENSSH_ENABLED='true'
 IOHUBOS_SSH_PUBLIC_KEY=''
 IOHUBOS_UPGRADER_ENABLED='true'
-IOHUBOS_ENGINE_ENABLED='true'
 IOHUBOS_DEPLOYER_ENABLED='true'
+IOHUBOS_DOCKER_ENABLED='true'
 
 ## === network configuration ===
 
@@ -60,11 +60,11 @@ IOHUBOS_FIREWALL_ROUTER_TO_INTERNET='false' # grant devices on router side acces
 
 ## === docker registry configuration ===
 
-IOHUBOS_ENGINE_REGISTRY_ENABLED='true'          # enable engine registry
-IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH0='false'     # registry accessible on eth0 side
-IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH1='false'     # registry accessible on eth1 side
-IOHUBOS_ENGINE_REGISTRY_RESCAN='true'           # force reload images from /var/lib/images at every restart
-IOHUBOS_ENGINE_REGISTRY_RESCAN_DELETE='true'    # delete the image after the import in the registry
+IOHUBOS_DOCKER_REGISTRY_ENABLED='true'          # enable engine registry
+IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH0='false'     # registry accessible on eth0 side
+IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH1='false'     # registry accessible on eth1 side
+IOHUBOS_DOCKER_REGISTRY_RESCAN='true'           # force reload images from /var/lib/images at every restart
+IOHUBOS_DOCKER_REGISTRY_RESCAN_DELETE='true'    # delete the image after the import in the registry
 
 ## === admin api ===
 
