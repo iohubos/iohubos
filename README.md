@@ -193,7 +193,7 @@ You can disable the auto-upgrade/downgrade capability by setting the `IOHUBOS_UP
 
 #### Docker engine
 
-By setting the variable `IOHUBOS_ENGINE_ENABLED` to `true`, all the Docker functionalities described below are enabled. All the enabled user applications will be started upon boot.
+By setting the variable `IOHUBOS_DOCKER_ENABLED` to `true`, all the Docker functionalities described below are enabled. All the enabled user applications will be started upon boot.
 
 #### Docker applications deployment
 
@@ -205,11 +205,11 @@ The format/content of the deployable package is described in the [Docker applica
 
 #### Internal Docker registry
 
-By setting `IOHUBOS_ENGINE_REGISTRY_ENABLED` to `true`, an internal Docker registry will run on the IOhubOS instance. You can use it to allow the device to keep working even when internet access is not available, have a faster startup of applications, and minimize network traffic
+By setting `IOHUBOS_DOCKER_REGISTRY_ENABLED` to `true`, an internal Docker registry will run on the IOhubOS instance. You can use it to allow the device to keep working even when internet access is not available, have a faster startup of applications, and minimize network traffic
 
 The Docker images embedded in the firmware are by default already available in the registry. To add new images to the registry, read the [Docker registry](#docker-registry) section below.
 
-You can expose the internal Docker registry on ETH0 or ETH1 by setting to `true` the variables `IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH0` and `IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH1`.
+You can expose the internal Docker registry on ETH0 or ETH1 by setting to `true` the variables `IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH0` and `IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH1`.
 
 #### Admin API
 
@@ -269,16 +269,16 @@ where:
 
 ### Docker Registry
 
-The Docker registry is enabled by default. You can disable it by setting the variable `IOHUBOS_ENGINE_REGISTRY_ENABLED` to `false`.
+The Docker registry is enabled by default. You can disable it by setting the variable `IOHUBOS_DOCKER_REGISTRY_ENABLED` to `false`.
 
 You can add new images to the registry by:
 
-* setting to `true` the variable `IOHUBOS_ENGINE_REGISTRY_RESCAN`
+* setting to `true` the variable `IOHUBOS_DOCKER_REGISTRY_RESCAN`
 * copying a Docker image to the `/iohub/runtime/iohub-registry` directory of your IOhubOS instance and rebooting the system.
 
-When `IOHUBOS_ENGINE_REGISTRY_RESCAN` is `true`, the folder `/iohub/runtime/iohub-registry` will be scanned for new images and added to the registry.
+When `IOHUBOS_DOCKER_REGISTRY_RESCAN` is `true`, the folder `/iohub/runtime/iohub-registry` will be scanned for new images and added to the registry.
 
-if `IOHUBOS_ENGINE_REGISTRY_RESCAN_DELETE` is 'true', the image file is deleted, once imported to the registry.
+if `IOHUBOS_DOCKER_REGISTRY_RESCAN_DELETE` is 'true', the image file is deleted, once imported to the registry.
 
 #### Prepare the Docker images
 

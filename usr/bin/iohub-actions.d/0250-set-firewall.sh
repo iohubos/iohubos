@@ -55,10 +55,10 @@ if [[ "${IOHUBOS_OPENSSH_ENABLED}" == "true" ]]; then
 fi
 
 # docker registry
-if [[ "${IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH0}" != "true" ]]; then
+if [[ "${IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH0}" != "true" ]]; then
     iptables -I FORWARD -i ${IOHUBOS_INBOUND_DEVICE} -p tcp --dport 5000 -j DROP
 fi
-if [[ "${IOHUBOS_NETWORK_MODE}" == "router" ]] && [[ "${IOHUBOS_ENGINE_REGISTRY_EXPOSE_ETH1}" != "true" ]]; then
+if [[ "${IOHUBOS_NETWORK_MODE}" == "router" ]] && [[ "${IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH1}" != "true" ]]; then
     iptables -I INPUT -i br1 -p tcp --dport 5000 -j DROP
 fi
 
