@@ -306,15 +306,25 @@ Upon reboot, the folder `/iohub/docker/apps` is scanned for Docker execution.
 
 Any folder below `/iohub/docker/apps` represent a Docker application, whose name is the folder name. The folder name must be a valid Docker Compose application name; the format accepted is 1 to 64 characters long, starting with a lowercase letter, followed by any number of lowercase letters, numbers, hyphens, or underscores.
 
-two files must be present in the folder `/iohub/docker/apps/<app_name>`:
+one file must be present in the folder `/iohub/docker/apps/<app_name>`:
 
 * `start.sh`: the script to run when the application is started
-* `docker-compose.yml`: the Docker Compose file
 
 If `start.sh` is present and has mode 755, the application will start upon boot.
 Otherwise, the application will be ignored.
 
-An example of `start.sh` file contains the following lines:
+#### Example 1: basic
+
+`start.sh`
+
+```bash
+#!/bin/sh
+docker run -d --name=grafana -p 3000:3000 grafana/grafana
+```
+
+#### Example 2: docker-compose - IOhub compatible
+
+`start.sh`
 
 ```bash
 #!/bin/sh
@@ -324,7 +334,7 @@ An example of `start.sh` file contains the following lines:
 docker-compose -f /iohub/docker/apps/<app name>/docker-compose.yml up -d
 ```
 
-An example `docker-compose.yml` file contains the following lines:
+`docker-compose.yml`
 
 ```yaml
 version: "3.8"
