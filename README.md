@@ -1,6 +1,6 @@
 # IOhubOS
 
-[![IOhubOS Logo](https://cdn.ezvpn.online/images/iohubos.svg)](https://github.com/iohubos/iohubos)
+[![IOhubOS Logo](https://github.com/iohubos/iohubos/blob/media/iohubos.svg?raw=true)](https://github.com/iohubos/iohubos)
 
 [![License](https://img.shields.io/github/license/iohubos/iohubos.svg)](LICENSE)
 
