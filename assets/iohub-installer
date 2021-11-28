@@ -1,0 +1,262 @@
+#!/bin/bash
+# Copyright 2021 EZ VPN Inc.
+# Author: paolo.denti@gmail.com (Paolo Denti)
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# constants
+firmware="/firmware.tgz"
+red=$'\e[1;31m'
+yel=$'\e[33m'
+grn=$'\e[32m'
+bld=$'\e[1m'
+end=$'\e[0m'
+
+# usage
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+    echo -e "${red}usage: $0 <device> [<eth device>: try auto discovery if absent]${end}"
+    echo -e "${yel}e.g.${end}"
+    echo -e "${yel}$0 /dev/sda${end}"
+    echo -e "${yel}$0 /dev/mmblck0 eno1${end}"
+    exit 1
+fi
+
+# check disk device
+disk=$1
+
+if [[ ! -b "${disk}" ]]; then
+    echo -e "${red}'${disk}' is not a valid disk device${end}"
+    exit 1
+fi
+
+devicePostfix=""
+if [[ $disk =~ .[0-9]$ ]]; then
+    devicePostfix="p"
+fi
+
+# read password
+stty -echo
+printf "new root password: "
+read password
+stty echo
+printf "\n"
+
+stty -echo
+printf "confirm root password: "
+read password2
+stty echo
+printf "\n"
+
+if [[ "${password}" != "${password2}" ]]; then
+    echo -e "${red}Password differ${end}"
+    exit 1
+fi
+if [[ $password =~ [[:space:]]+ ]]; then
+    echo -e "${red}Password cannot contain spaces${end}"
+    exit 1
+fi
+if [[ ${#password} -lt 6 ]]; then
+    echo -e "${red}Password must be at least 6 characters long${end}"
+    exit 1
+fi
+
+# identify ethernet device
+if [ $# -eq 2 ]; then
+    # eth device manually forced
+    ETH=$2
+    FOUND=$(ip link | awk "/^[0-9]+: ${ETH}:/{print}")
+    if [ "${FOUND}" == "" ]; then
+        echo -e "${red}device ${ETH} not found${end}"
+        exit 1
+    fi
+else
+    # try autodiscovery
+    echo -e "${yel}Running network autodiscovery ...${end}"
+
+    ip link | awk '/^[0-9]+: e/{print}' | sed -e 's/^[0-9]\+: \([^:]\+\):.*$/\1/' | while read -r interface ; do
+        echo -e "${yel}Testing interface ${interface} ...${end}"
+        ip link set dev ${interface} up >/dev/null 2>&1
+        sleep 1
+
+        ATTEMPTS=0
+        while : ; do
+            carrier=$([[ -f /sys/class/net/${interface}/carrier ]] && cat /sys/class/net/${interface}/carrier 2>/dev/null)
+            if [[ "${carrier}" == "1" ]]; then
+                echo -e "\n${grn}interface ${interface} is connected, trying to obtain ip via dhcp...${end}"
+                dhclient ${interface} >/dev/null 2>&1
+                break
+            fi
+            if [ "${ATTEMPTS}" -gt 15 ] ; then
+                echo -e "\n${red}interface ${interface} is not connected, skipping${end}"
+                break
+            fi
+
+            ATTEMPTS=$((ATTEMPTS + 1))
+            printf "."
+            sleep 1
+        done
+    done
+
+    ETH=$(route | grep '^default' | grep -o '[^ ]*$')
+    if [ $? -ne 0 ]; then
+        echo -e "${red}no default route, connect an ethernet cable to the default interface or pass the eth device as parameter${end}"
+        exit 1
+    fi
+    echo -e "${grn}... default device ${ETH} found${end}\n"
+fi
+
+# start formatting
+echo -e "${yel}clearing partitions on ${disk} ...${end}"
+sync && sfdisk --delete ${disk}
+echo -e "${grn}... partitions on ${disk} cleared${end}\n"
+
+sleep 1
+
+echo -e "${yel}repartitioning ${disk} ...${end}"
+sync && parted --script ${disk} \
+    mklabel gpt \
+    mkpart ESP fat32 1MiB 200MiB \
+        name 1 EFI \
+        set 1 esp on \
+    mkpart primary ext4 200MiB 4200MiB \
+        name 2 iohubboot1 \
+        set 2 msftdata on \
+    mkpart primary ext4 4200MiB 8200MiB \
+        name 3 iohubboot2 \
+        set 3 msftdata on \
+    mkpart primary ext4 8200MiB 100% \
+        name 4 iohubdata \
+        set 4 msftdata on
+echo -e "${grn}... ${disk} repartitioned${end}\n"
+
+sleep 1
+
+echo -e "${yel}formatting all partitions on ${disk} ...${end}"
+sync && mkfs.vfat -F32 ${disk}${devicePostfix}1
+sync && mkfs.ext4 -F ${disk}${devicePostfix}2
+sync && mkfs.ext4 -F ${disk}${devicePostfix}3
+sync && mkfs.ext4 -F ${disk}${devicePostfix}4
+echo -e "${grn}... all partitions on ${disk} formatted${end}\n"
+
+sleep 1
+
+echo -e "${yel}mounting ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 ...${end}"
+mkdir -p /mnt/{iohubboot1,iohubboot2}
+mount ${disk}${devicePostfix}2 /mnt/iohubboot1
+mount ${disk}${devicePostfix}3 /mnt/iohubboot2
+echo -e "${grn}... ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 ...mounted${end}\n"
+
+sleep 1
+
+echo -e "${yel}transferring firmware onto ${disk}${devicePostfix}2 ...${end}"
+cd /mnt/iohubboot1/
+tar zxvf ${firmware}
+
+sleep 1
+
+echo -e "${yel}transferring firmware onto ${disk}${devicePostfix}3 ...${end}"
+cd /mnt/iohubboot2/
+tar zxvf ${firmware}
+
+sleep 1
+
+cd /
+echo -e "${grn}... firmware on ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 transferred${end}\n"
+
+echo -e "${yel}umounting ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 ...${end}"
+umount /mnt/{iohubboot1,iohubboot2}
+rmdir /mnt/{iohubboot1,iohubboot2}
+echo -e "${grn}... ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 umounted${end}\n"
+
+echo -e "${yel}mounting EFI partition on ${disk} ...${end}"
+mkdir -p /mnt/efi
+mount ${disk}${devicePostfix}1 /mnt/efi
+echo -e "${grn}... EFI partition on ${disk} mounted${end}\n"
+
+sleep 1
+
+echo -e "${yel}installing grub on EFI partition ...${end}"
+mkdir -p /mnt/efi/boot/grub
+grub-install \
+    --target=x86_64-efi \
+    --efi-directory=/mnt/efi \
+    --boot-directory=/mnt/efi/boot \
+    --recheck
+
+sleep 1
+
+[[ -f /mnt/efi/EFI/BOOT/fbx64.efi ]] && rm /mnt/efi/EFI/BOOT/fbx64.efi
+
+cat <<EOF >/mnt/efi/boot/grub/grub.cfg
+insmod all_video
+
+set default="iohub-live1"
+set timeout=10
+set timeout_style=menu
+
+menuentry "IOhubOS (boot 1)" --id iohub-live1 {
+    set root=(hd0,gpt2)
+    linux /vmlinuz boot=live bootfrom=${disk}${devicePostfix}2 ip=frommedia quiet nomodeset systemd.show_status=0 iohub-boot1
+    initrd /initrd
+}
+menuentry "IOhubOS (boot 2)" --id iohub-live2 {
+    set root=(hd0,gpt3)
+    linux /vmlinuz boot=live bootfrom=${disk}${devicePostfix}3 ip=frommedia quiet nomodeset systemd.show_status=0 iohub-boot2
+    initrd /initrd
+}
+EOF
+echo -e "${grn}... grub installed on EFI partition${end}\n"
+
+echo -e "${yel}umounting EFI partition on ${disk} ...${end}"
+umount /mnt/efi
+rmdir /mnt/efi
+echo -e "${grn}... EFI partition on ${disk} umounted${end}\n"
+
+echo -e "\n${grn}${bld}IOhubOS installed on ${disk}${end}\n"
+
+# prepare writable partition
+echo -e "${yel}preparing default IOhubOS configuration ...${end}"
+
+mkdir -p /mnt/writable
+mount ${disk}${devicePostfix}4 /mnt/writable
+
+# set root password
+mkdir -p /mnt/writable/runtime/iohub-bootstrap
+
+hashedShadow=$(openssl passwd -6 -salt $(tr -dc A-Za-z0-9 </dev/urandom | head -c 13) ${password})
+
+cat <<EOF >/mnt/writable/runtime/iohub-bootstrap/postsetup
+sed -i -e "s#^root:\([^\:]\)*:#root:${hashedShadow//$/\\$}:#" /etc/shadow
+EOF
+chmod 644 /mnt/writable/runtime/iohub-bootstrap/postsetup
+
+# create base environment definition
+MACADDR=$(ifconfig ${ETH} | awk '/^ +ether / {print $2; exit}')
+
+cat <<EOF >>/mnt/writable/envvars
+## === base configuration ===
+
+IOHUBOS_DEVICE="${disk}"
+IOHUBOS_ETH0_DEVICE="${ETH}"
+IOHUBOS_HOSTNAME="iohub-${MACADDR//:/''}"
+
+EOF
+cat /envvars >> /mnt/writable/envvars
+chmod 644 /mnt/writable/envvars
+
+cat <<EOF >/mnt/writable/forwards-tcp
+# SRC_PORT=DST_IP:DST_PORT
+EOF
+chmod 644 /mnt/writable/forwards-tcp
+
+cat <<EOF >/mnt/writable/forwards-udp
+# SRC_PORT=DST_IP:DST_PORT
+EOF
+chmod 644 /mnt/writable/forwards-udp
+
+# umount writable partition
+umount /mnt/writable
+echo -e "${grn}... default IOhubOS configuration completed${end}"
+
+read -p "${red}Press enter to shutdown${end}"
+shutdown -h now
