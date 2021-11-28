@@ -569,6 +569,58 @@ The fourth partition is the writable partition. It is used to store any user dat
 * `iohub-install-firmware`: it can be used to install a new firmware manually on the next partition (partition 3 when partition 2 is the default, partition 2 otherwise).
 * `iohub-next-partition`: it returns the partition number, not in use (1 or 2, for partitions 2 and 3).
 
+## IOhubOS extension example: Logging to GCP
+
+As an example of how it is possible to modify the IOhubOS behavior, we will adjust the default Docker logging behavior, enabling logging to GCP.
+
+Based on the Docker instructions to implement the logging to GCP [here](https://docs.docker.com/config/containers/logging/gcplogs/),
+we create three files below the `/iohub/live` folder to have them copied over their correct location upon boot.
+
+1. `/iohub/live/etc/docker/daemon.json`: the Docker logging configuration file.
+2. `/iohub/live/etc/docker/googlecloud-serviceaccount.json`: the GCP credentials file.
+3. `/iohub/live/etc/systemd/system/diocker.service.d/gcplogging.conf`: the environment variable definition, to provide Docker the GCP credentials.
+
+daemon.json
+
+```json
+{
+  "log-driver": "gcplogs",
+  "log-opts": {
+    "gcp-project": "<your GCP project>",
+    "mode": "non-blocking",
+    "max-buffer-size": "50m"
+  }
+}
+
+```
+
+googlecloud-serviceaccount.json (generated on GCP, data hidden here)
+
+```json
+{
+  "type": "service_account",
+  "project_id": "<your GCP project>",
+  "private_key_id": "<...>",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n<...>\n-----END PRIVATE KEY-----\n",
+  "client_email": "<...>",
+  "client_id": "<...>",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/<...>"
+}
++
+```
+
+gcplogging.conf
+
+```text
+[Service]
+Environment="GOOGLE_APPLICATION_CREDENTIALS=/etc/docker/googlecloud-serviceaccount.json"
+```
+
+Reboot the system to apply the changes. Your Docker engine should now be logging to GCP.
+
 ## License
 
 IOhubOS is distributed under the terms of The GNU Affero General Public License v3.0.
