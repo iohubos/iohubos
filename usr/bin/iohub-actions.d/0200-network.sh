@@ -95,7 +95,9 @@ EOF
 fi
 
 systemctl restart networking
-ip link set dev ${IOHUBOS_ETH1_DEVICE} up
+if [[ "${IOHUBOS_NETWORK_MODE}" == "router" ]]; then
+    ip link set dev ${IOHUBOS_ETH1_DEVICE} up
+fi
 
 if [[ "${IOHUBOS_WIFI_MODE}" == "client" ]]; then
     # wifi client mode
