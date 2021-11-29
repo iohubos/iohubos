@@ -6,6 +6,9 @@ executors:
             IMAGE_NAME: iohubos/iohubos-builder
         machine:
             image: ubuntu-2004:202111-01
+    master-checker:
+        docker:
+            - image: cimg/base:stable-20.04
 
 jobs:
     build:
@@ -43,6 +46,11 @@ jobs:
                       docker push $IMAGE_NAME:latest
                       docker push $IMAGE_NAME:$IMAGE_TAG
 
+    build-master:
+        executor: master-checker
+        steps:
+            - run: echo "Success"
+
 workflows:
     version: 2
     build-tags:
@@ -55,3 +63,9 @@ workflows:
                           only: /^v.*/
                       branches:
                           ignore: /.*/
+    build-master:
+        jobs:
+            - build-master:
+                  filters:
+                      branches:
+                          only: master
