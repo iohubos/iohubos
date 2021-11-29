@@ -1,0 +1,10 @@
+# Copyright 2021 EZ VPN Inc.
+# Author: paolo.denti@gmail.com (Paolo Denti)
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+load_vars() {
+    [ -f /usr/lib/iohub/version ] && . /usr/lib/iohub/version
+    [ -f /iohub/sysvars ] && . /iohub/sysvars
+    [ -f /iohub/envvars ] && . /iohub/envvars
+}

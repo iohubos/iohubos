@@ -233,7 +233,7 @@ chmod 644 /mnt/writable/runtime/iohub-bootstrap/postsetup
 # create base environment definition
 MACADDR=$(ifconfig ${ETH} | awk '/^ +ether / {print $2; exit}')
 
-cat <<EOF >>/mnt/writable/envvars
+cat <<EOF >>/mnt/writable/sysvars
 ## === base configuration ===
 
 IOHUBOS_DEVICE="${disk}"
@@ -241,8 +241,7 @@ IOHUBOS_ETH0_DEVICE="${ETH}"
 IOHUBOS_HOSTNAME="iohub-${MACADDR//:/''}"
 
 EOF
-cat /envvars >> /mnt/writable/envvars
-chmod 644 /mnt/writable/envvars
+chmod 644 /mnt/writable/sysvars
 
 cat <<EOF >/mnt/writable/forwards-tcp
 # SRC_PORT=DST_IP:DST_PORT

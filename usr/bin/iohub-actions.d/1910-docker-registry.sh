@@ -45,7 +45,9 @@ waitForRegistry() {
     done
 }
 
-[ -f /iohub/envvars ] && . /iohub/envvars
+. /usr/lib/iohub/init-functions
+
+load_vars
 
 if [[ "${IOHUBOS_DOCKER_ENABLED}" != "true" || "${IOHUBOS_DOCKER_REGISTRY_ENABLED}" != "true" ]]; then
     exit 0
