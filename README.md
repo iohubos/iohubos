@@ -37,6 +37,8 @@ Its main characteristics are:
 
 IOhubOS is the Open Source evolution of the proprietary IOhub technology developed by [EZ VPN](https://iohubdocs.ezvpn.online/).
 
+IOhubOS is backward compatible with the existing IOhub; existing IOhub application can be exported and deployed on IOhubOS.
+
 While the existing IOhub technology is proprietary, it is still used in many industries and is used in a wide range of environments.
 
 The new IOhubOS aims to become the de-facto standard operating system for Industrial and IIoT environments.
@@ -451,7 +453,7 @@ The applications created with EZ VPN IOhub are compatible with the IOhubOS. If a
 
 ```bash
 IOHUBOS_GLOBAL_MQTT='true'
-IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:5000/ezvpn/iohubos-mqtt"
+IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:5000/iohubos/iohubos-mqtt"
 IOHUBOS_GLOBAL_MQTT_NAME="ezvpn-global-mqtt"
 IOHUBOS_GLOBAL_MQTT_NET="ezvpn-global-mqtt-net"
 ```

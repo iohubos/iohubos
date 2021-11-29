@@ -30,21 +30,21 @@ docker run -it --privileged --rm \
     docker /img_downloader.sh
 
 # build the builder image
-docker build --no-cache -t iohubosbuilder .
+docker build --no-cache -t iohubos/iohubos-builder .
 
 # create the destination folder for the image and the firmware
 mkdir dist
-docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubosbuilder
+docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubos/iohubos-builder
 ```
 
-As long the `iohubosbuilder` image is available, you can generate the installer and the firmware on need, just repeating the last step (`docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubosbuilder`).
+As long the `iohubos/iohubos-builder` image is available, you can generate the installer and the firmware on need, just repeating the last step (`docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubos/iohubos-builder`).
 
 ### Additional build parameters
 
 If you want to improve the download speed while building the image, you can force a Debian mirror, for example:
 
 ```bash
-docker build --no-cache --build-arg MIRROR=http://ftp.de.debian.org/debian/ -t iohubosbuilder .
+docker build --no-cache --build-arg MIRROR=http://ftp.de.debian.org/debian/ -t iohubos/iohubos-builder .
 ```
 
 The default value for the `MIRROR` arg is `http://deb.debian.org/debian`
@@ -59,7 +59,18 @@ docker run -it --privileged --rm \
     --mount type=bind,source=${PWD}/assets/img_downloader.sh,target=/img_downloader.sh \
     --mount type=bind,source=${PWD}/assets/registry,target=/registry \
     docker /img_downloader.sh
-docker build --no-cache --build-arg REGISTRY=somefolder -t iohubosbuilder .
+docker build --no-cache --build-arg REGISTRY=somefolder -t iohubos/iohubos-builder .
+```
+
+### Using the Docker Hub image
+
+We keep up to date the latest `iohubos/iohubos-builder` Docker image on Docker Hub.
+
+You can skip the building process and just use the latest image from Docker Hub:
+
+```bash
+mkdir dist
+docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubos/iohubos-builder
 ```
 
 ### Clean up
@@ -67,7 +78,7 @@ docker build --no-cache --build-arg REGISTRY=somefolder -t iohubosbuilder .
 You can delete the Docker image if you want to reclaim the taken space (~5Gb).
 
 ```bash
-docker image rm iohubosbuilder
+docker image rm iohubos/iohubos-builder
 ```
 
 ## Flash the installer to a USB stick

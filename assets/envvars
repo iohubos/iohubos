@@ -75,6 +75,6 @@ IOHUBOS_ADMIN_API_AUTH_TOKEN=''             # header auth token - must be at lea
 ## === IOhub compatibility layer ===
 
 IOHUBOS_GLOBAL_MQTT='true'
-IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:5000/ezvpn/iohubos-mqtt"
-IOHUBOS_GLOBAL_MQTT_NAME="ezvpn-global-mqtt"
-IOHUBOS_GLOBAL_MQTT_NET="ezvpn-global-mqtt-net"
+IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:5000/iohubos/iohubos-mqtt"
+IOHUBOS_GLOBAL_MQTT_NAME="ezvpn-global-mqtt"    # keep ezvpn-global-mqtt to keep backword compatibility with IOhub global broker definiton
+IOHUBOS_GLOBAL_MQTT_NET="ezvpn-global-mqtt-net" # keep ezvpn-global-mqtt-net to keep backword compatibility with IOhub global broker definiton

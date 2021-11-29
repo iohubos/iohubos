@@ -11,7 +11,7 @@ if [[ "${IOHUBOS_ADMIN_API_ENABLED}" != "true" ]]; then
 fi
 
 # start admin api
-docker pull "${IOHUBOS_HOSTNAME}:5000/ezvpn/iohubos-admin-api"
+docker pull "${IOHUBOS_HOSTNAME}:5000/iohubos/iohubos-admin-api"
 
 docker run -d --rm --privileged \
     --name iohubos-admin-api \
@@ -20,4 +20,4 @@ docker run -d --rm --privileged \
     -e ROOT_DOCKER_FOLDER=/mnt \
     -e DEST_DOCKER_FOLDER=/iohub/docker/apps \
     -e API_TOKEN="${IOHUBOS_ADMIN_API_AUTH_TOKEN}" \
-    "${IOHUBOS_HOSTNAME}:5000/ezvpn/iohubos-admin-api"
+    "${IOHUBOS_HOSTNAME}:5000/iohubos/iohubos-admin-api"
