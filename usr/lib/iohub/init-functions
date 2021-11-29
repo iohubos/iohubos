@@ -3,8 +3,24 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
+getVersion() {
+    echo "$@" | awk -F. '{ printf("%d%05d%05d%05d\n", $1,$2,$3,$4); }'
+}
+
 load_vars() {
     [ -f /usr/lib/iohub/version ] && . /usr/lib/iohub/version
     [ -f /iohub/sysvars ] && . /iohub/sysvars
     [ -f /iohub/envvars ] && . /iohub/envvars
+
+    # load all firmware specific versions up to current version
+    currentVersion=$(getVersion ${IOHUBOS_VERSION})
+    for version in $(ls /iohub/envvars.d/*.*.*-envvars | sort -V); do
+        if [ -f "$version" ]; then
+            local envvar=$(basename "$version")
+            local normalizedVersion=$(getVersion ${envvar})
+            if [ ${normalizedVersion} -le ${currentVersion} ]; then
+                . $version
+            fi
+        fi
+    done
 }

@@ -96,7 +96,7 @@ find /usr/bin/iohub-actions.d -type f -exec chmod 644 {} \;
 find /usr/bin/iohub-actions.d -type f -name '*.sh' -exec chmod 755 {} \;
 
 cp -rp /usr/src/iohubos/usr/lib/iohub /usr/lib
-echo -e "IOHUBOS_VERSION=${IOHUBOS_VERSION}" > /usr/lib/iohub/version
+printf "IOHUBOS_VERSION=${IOHUBOS_VERSION}" > /usr/lib/iohub/version
 find /usr/lib/iohub -type f -exec chmod 644 {} \;
 
 # bootstrap service

@@ -564,7 +564,8 @@ The fourth partition is the writable partition. It is used to store any user dat
    |   |   |   |--> <app 3>
    |   |   |--> global/                # global applications
    |   |   |--> registry/              # internal Docker registry
-   |   |--> envvars                    # configuration file - user environment variables
+   |   |--> envvars                    # user environment variables
+   |   |--> envvars.d/                 # user environment variables - firmware version specific
    |   |--> firmware/                  # folder for automatic firmware deployment
    |   |--> forwards-tcp               # tcp forwards definitions
    |   |--> forwards-udp               # udp forwards definitions
@@ -572,7 +573,7 @@ The fourth partition is the writable partition. It is used to store any user dat
    |   |--> runtime/                   # folder for permanent data used by scripts
    |   |   |--> iohub-bootstrap/       # hooks definitions for iohub-boostrap
    |   |   |--> iohub-registry         # folder for Docker registry automatic import
-   |   |--> sysvars                    # configuration file - system environment variables
+   |   |--> sysvars                    # system environment variables
    |--> usr
    |   |--> bin
    |   |   |--> iohub-actions.d        # folder for iohub-bootstrap scripts (read only)
