@@ -3,6 +3,7 @@
 [![IOhubOS Logo](https://github.com/iohubos/iohubos/blob/media/iohubos.svg?raw=true)](https://github.com/iohubos/iohubos)
 
 [![License](https://img.shields.io/github/license/iohubos/iohubos.svg)](LICENSE)
+[![CircleCI Build Status](https://circleci.com/gh/iohubos/iohubos/tree/master.svg?style=shield)](https://circleci.com/gh/iohubos/iohubos/tree/master)
 
 ## Introduction
 
