@@ -4,7 +4,9 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
-[ -f /iohub/envvars ] && . /iohub/envvars
+. /usr/lib/iohub/init-functions
+
+load_vars
 
 if [[ "${IOHUBOS_OPENSSH_ENABLED}" != "true" ]]; then
     exit 0

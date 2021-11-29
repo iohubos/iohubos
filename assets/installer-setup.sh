@@ -39,9 +39,6 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends openss
 # copy setup only commands
 cp /usr/src/iohubos/assets/iohub-installer /usr/bin/iohub-installer
 chmod 755 /usr/bin/iohub-installer
-echo -e "IOHUBOS_VERSION=${IOHUBOS_VERSION}\n" > /envvars
-cat /usr/src/iohubos/assets/envvars >> /envvars
-chmod 644 /envvars
 
 # create autologin
 mkdir /etc/systemd/system/getty@.service.d
