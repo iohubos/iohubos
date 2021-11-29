@@ -1,0 +1,57 @@
+version: 2.1
+
+executors:
+    machine-publisher:
+        environment:
+            IMAGE_NAME: iohubos/iohubos-builder
+        machine:
+            image: ubuntu-2004:202111-01
+
+jobs:
+    build:
+        executor: machine-publisher
+        steps:
+            - checkout
+            - run:
+                  name: Tar Docker images
+                  command: |
+                      mkdir registry
+                      docker pull registry:2
+                      docker save registry:2 | gzip > ./registry/registry.tar.gz
+                      chmod 644 ./registry/registry.tar.gz
+
+                      IMGNUM=1
+                      [ -f ./assets/registry ] && cat ./assets/registry |
+                      while read -r image
+                      do
+                          docker pull ${image}
+                          docker save ${image} | gzip > ./registry/image-${IMGNUM}.tar.gz
+                          chmod 644 ./registry/image-${IMGNUM}.tar.gz
+
+                          IMGNUM=$((IMGNUM + 1))
+                      done
+            - run:
+                  name: Build IOhubOS Builder
+                  command: |
+                      docker build -t $IMAGE_NAME .
+            - run:
+                  name: Publish Docker Image to Docker Hub
+                  command: |
+                      echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                      IMAGE_TAG=${CIRCLE_TAG/v/''}
+                      docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
+                      docker push $IMAGE_NAME:latest
+                      docker push $IMAGE_NAME:$IMAGE_TAG
+
+workflows:
+    version: 2
+    build-tags:
+        jobs:
+            - build:
+                  context:
+                      - dockerhub-iohubos
+                  filters:
+                      tags:
+                          only: /^v.*/
+                      branches:
+                          ignore: /.*/
