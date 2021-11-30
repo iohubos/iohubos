@@ -583,6 +583,7 @@ The fourth partition is the writable partition. It is used to store any user dat
 
 * `iohub-install-firmware`: it can be used to install a new firmware manually on the next partition (partition 3 when partition 2 is the default, partition 2 otherwise).
 * `iohub-next-partition`: it returns the partition number, not in use (1 or 2, for partitions 2 and 3).
+* `iohub-set-boot-default`: Set the default boot partition. Optionally change the entry menu description.
 
 ## IOhubOS extension example: Logging to GCP
 

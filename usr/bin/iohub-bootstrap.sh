@@ -30,10 +30,8 @@ if [ ! -f /iohub/setup.done ]; then
     mkdir -p /iohub/live
     mkdir -p /iohub/runtime/iohub-bootstrap
     mkdir -p /iohub/runtime/iohub-registry
-    mkdir -p /iohub/envvars.d
 
     cp /usr/lib/iohub/envvars /iohub/envvars
-    cp /usr/lib/iohub/envvars.d/* /iohub/envvars.d/.
 
     touch /iohub/setup.done
 fi
