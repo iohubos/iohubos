@@ -1,6 +1,6 @@
 FROM debian:11.1
 
-ENV IOHUBOS_VERSION=1.0.0
+ENV IOHUBOS_VERSION=1.0.1
 ENV SUITE=bullseye
 ENV WORK=/work
 
@@ -43,6 +43,7 @@ RUN mkdir -p $WORK/LIVE_BOOT/image/live
 RUN mksquashfs $WORK/LIVE_BOOT/chroot $WORK/LIVE_BOOT/image/live/filesystem.squashfs -e boot
 RUN cp -p $WORK/LIVE_BOOT/chroot/boot/vmlinuz-*     $WORK/LIVE_BOOT/image/vmlinuz
 RUN cp -p $WORK/LIVE_BOOT/chroot/boot/initrd.img-*  $WORK/LIVE_BOOT/image/initrd
+RUN printf "${IOHUBOS_VERSION}" >  $WORK/LIVE_BOOT/image/VERSION
 
 # create firmware image in /installer/firmware.tgz
 RUN cd $WORK/LIVE_BOOT/image && tar zcvf /installer/firmware.tgz * && cd -

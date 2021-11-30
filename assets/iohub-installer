@@ -110,8 +110,6 @@ echo -e "${yel}clearing partitions on ${disk} ...${end}"
 sync && sfdisk --delete ${disk}
 echo -e "${grn}... partitions on ${disk} cleared${end}\n"
 
-sleep 1
-
 echo -e "${yel}repartitioning ${disk} ...${end}"
 sync && parted --script ${disk} \
     mklabel gpt \
@@ -129,8 +127,6 @@ sync && parted --script ${disk} \
         set 4 msftdata on
 echo -e "${grn}... ${disk} repartitioned${end}\n"
 
-sleep 1
-
 echo -e "${yel}formatting all partitions on ${disk} ...${end}"
 sync && mkfs.vfat -F32 ${disk}${devicePostfix}1
 sync && mkfs.ext4 -F ${disk}${devicePostfix}2
@@ -138,27 +134,19 @@ sync && mkfs.ext4 -F ${disk}${devicePostfix}3
 sync && mkfs.ext4 -F ${disk}${devicePostfix}4
 echo -e "${grn}... all partitions on ${disk} formatted${end}\n"
 
-sleep 1
-
 echo -e "${yel}mounting ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 ...${end}"
 mkdir -p /mnt/{iohubboot1,iohubboot2}
 mount ${disk}${devicePostfix}2 /mnt/iohubboot1
 mount ${disk}${devicePostfix}3 /mnt/iohubboot2
 echo -e "${grn}... ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 ...mounted${end}\n"
 
-sleep 1
-
 echo -e "${yel}transferring firmware onto ${disk}${devicePostfix}2 ...${end}"
-cd /mnt/iohubboot1/
-tar zxvf ${firmware}
-
-sleep 1
+tar zxf ${firmware} -C /mnt/iohubboot1
+version1=$(cat /mnt/iohubboot1/VERSION)
 
 echo -e "${yel}transferring firmware onto ${disk}${devicePostfix}3 ...${end}"
-cd /mnt/iohubboot2/
-tar zxvf ${firmware}
-
-sleep 1
+tar zxf ${firmware} -C /mnt/iohubboot2
+version2=$(cat /mnt/iohubboot2/VERSION)
 
 cd /
 echo -e "${grn}... firmware on ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 transferred${end}\n"
@@ -173,8 +161,6 @@ mkdir -p /mnt/efi
 mount ${disk}${devicePostfix}1 /mnt/efi
 echo -e "${grn}... EFI partition on ${disk} mounted${end}\n"
 
-sleep 1
-
 echo -e "${yel}installing grub on EFI partition ...${end}"
 mkdir -p /mnt/efi/boot/grub
 grub-install \
@@ -183,10 +169,9 @@ grub-install \
     --boot-directory=/mnt/efi/boot \
     --recheck
 
-sleep 1
-
 [[ -f /mnt/efi/EFI/BOOT/fbx64.efi ]] && rm /mnt/efi/EFI/BOOT/fbx64.efi
 
+version=$(cat /mnt/newfw/VERSION)
 cat <<EOF >/mnt/efi/boot/grub/grub.cfg
 insmod all_video
 
@@ -194,12 +179,12 @@ set default="iohub-live1"
 set timeout=10
 set timeout_style=menu
 
-menuentry "IOhubOS (boot 1)" --id iohub-live1 {
+menuentry "IOhubOS ${version1}" --id iohub-live1 {
     set root=(hd0,gpt2)
     linux /vmlinuz boot=live bootfrom=${disk}${devicePostfix}2 ip=frommedia quiet nomodeset systemd.show_status=0 iohub-boot1
     initrd /initrd
 }
-menuentry "IOhubOS (boot 2)" --id iohub-live2 {
+menuentry "IOhubOS ${version2}" --id iohub-live2 {
     set root=(hd0,gpt3)
     linux /vmlinuz boot=live bootfrom=${disk}${devicePostfix}3 ip=frommedia quiet nomodeset systemd.show_status=0 iohub-boot2
     initrd /initrd

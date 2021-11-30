@@ -13,14 +13,16 @@ load_vars() {
     [ -f /iohub/envvars ] && . /iohub/envvars
 
     # load all firmware specific versions up to current version
-    currentVersion=$(getVersion ${IOHUBOS_VERSION})
-    for version in $(ls /iohub/envvars.d/*.*.*-envvars | sort -V); do
-        if [ -f "$version" ]; then
-            local envvar=$(basename "$version")
-            local normalizedVersion=$(getVersion ${envvar})
-            if [ ${normalizedVersion} -le ${currentVersion} ]; then
-                . $version
+    if [[ -d "/iohub/envvars.d" ]]; then
+        currentVersion=$(getVersion ${IOHUBOS_VERSION})
+        for version in $(ls /iohub/envvars.d/*.*.*-envvars | sort -V); do
+            if [ -f "$version" ]; then
+                local envvar=$(basename "$version")
+                local normalizedVersion=$(getVersion ${envvar})
+                if [ ${normalizedVersion} -le ${currentVersion} ]; then
+                    . $version
+                fi
             fi
-        fi
-    done
+        done
+    fi
 }

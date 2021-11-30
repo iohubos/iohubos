@@ -87,9 +87,11 @@ sed -i -e 's/^#kernel.printk =.*$/kernel.printk = 3 4 1 3/' /etc/sysctl.conf
 # iohub commands
 cp /usr/src/iohubos/usr/bin/iohub-next-partition.sh      /usr/bin/iohub-next-partition.sh
 cp /usr/src/iohubos/usr/bin/iohub-install-firmware.sh    /usr/bin/iohub-install-firmware.sh
+cp /usr/src/iohubos/usr/bin/iohub-set-boot-default.sh    /usr/bin/iohub-set-boot-default.sh
 chmod 755 \
     /usr/bin/iohub-next-partition.sh \
-    /usr/bin/iohub-install-firmware.sh
+    /usr/bin/iohub-install-firmware.sh \
+    /usr/bin/iohub-set-boot-default.sh
 
 cp -rp /usr/src/iohubos/usr/bin/iohub-actions.d /usr/bin
 find /usr/bin/iohub-actions.d -type f -exec chmod 644 {} \;

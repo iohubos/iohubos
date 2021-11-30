@@ -11,12 +11,12 @@ while getopts ":b:m:" flag; do
     esac
 done
 
-firmware=${@:$OPTIND:1}
+partnum=${@:$OPTIND:1}
 
 # check usage
-if [ "${firmware}" == "" ]; then
-    echo "usage: $0 [-m <boot menu description>] [-b <boot disk device>] <firmware file>"
-    echo "e.g.: $0  -b /dev/sda -m 'My custom firmware' /tmp/firmware.tgz"
+if [ "${partnum}" == "" ]; then
+    echo "usage: $0 [-b <boot disk device>] [-m <boot menu description>] <default boot partion: 1 or 2>"
+    echo "eg: $0 -b /dev/sda -m 'My custom firmware' 1"
     exit 1
 fi
 
@@ -34,8 +34,8 @@ if [[ ! -b "${disk}" ]]; then
     exit 1
 fi
 
-if [[ ! -f "${firmware}" ]]; then
-    echo "firmware '${firmware}' not found"
+if [[ "${partnum}" != "1" && "${partnum}" != "2" ]]; then
+    echo "partition must be either 1 or 2"
     exit 1
 fi
 
@@ -44,39 +44,8 @@ if [[ $disk =~ .[0-9]$ ]]; then
     devicePostfix="p"
 fi
 
-# select new partition
-partnum=$(iohub-next-partition.sh)
-realpartnum=$(( partnum + 1 ))
-
-echo "installing new firmware on '${disk}${devicePostfix}${realpartnum}'"
-
-# format partition
-sync && mkfs.vfat -F32 ${disk}${devicePostfix}${realpartnum}
-if [[ $? -ne 0 ]]; then
-    echo "format of '${disk}${devicePostfix}${realpartnum}' failed"
-    exit 1
-fi
-
-# update partition
-
-echo "setting '${disk}${devicePostfix}${realpartnum}' as default boot partition"
-
-# mount disk
-rm -rf /mnt/newfw
-mkdir -p /mnt/newfw
-mount ${disk}${devicePostfix}${realpartnum} /mnt/newfw
-
-# extract new firmware
-tar zxf ${firmware} -C /mnt/newfw
-version=$(cat /mnt/newfw/VERSION)
-
 mkdir -p /mnt/efi
 mount ${disk}${devicePostfix}1 /mnt/efi
-
-if [ "${bootdesc}" == "" ];
-then
-    bootdesc="IOhubOS ${version}"
-fi
 
 sed -i -e "s/^set default=\"iohub-live.*$/set default=\"iohub-live${partnum}\"/" /mnt/efi/boot/grub/grub.cfg
 if [[ "${bootdesc}" != "" ]]; then
@@ -85,7 +54,3 @@ fi
 
 umount /mnt/efi
 rmdir /mnt/efi
-
-# umount disk
-umount /mnt/newfw
-rmdir /mnt/newfw
