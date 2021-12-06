@@ -555,7 +555,7 @@ The fourth partition is the writable partition. It is used to store any user dat
 
 ```text
 /-->                                   # read only file system
-   |--> iohubos/                       # writable partition
+   |--> iohub/                         # writable partition
    |   |--> deploy/                    # folder for automatic apps deployment
    |   |--> docker/                    # folder for Docker Applications
    |   |   |--> apps/                  # user applications
