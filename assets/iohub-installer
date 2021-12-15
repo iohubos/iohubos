@@ -228,22 +228,6 @@ IOHUBOS_HOSTNAME="iohub-${MACADDR//:/''}"
 EOF
 chmod 644 /mnt/writable/sysvars
 
-cat <<EOF >/mnt/writable/forwards-tcp
-# SRC_PORT=DST_IP:DST_PORT
-EOF
-chmod 644 /mnt/writable/forwards-tcp
-
-cat <<EOF >/mnt/writable/forwards-udp
-# SRC_PORT=DST_IP:DST_PORT
-EOF
-chmod 644 /mnt/writable/forwards-udp
-
-cat <<EOF >/mnt/writable/routes
-# DESTINATION/NETMASK:GATEWAY
-# e.g. 192.168.152.0/24:10.11.12.100
-EOF
-chmod 644 /mnt/writable/routes
-
 # umount writable partition
 umount /mnt/writable
 echo -e "${grn}... default IOhubOS configuration completed${end}"
