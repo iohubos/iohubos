@@ -25,6 +25,7 @@ Its main characteristics are:
 * It can be used on edge devices, inside a control panel, or as an industrial router.
 * When used as a router, it can fully isolate all the connected devices from the internet and provide a secure, isolated network.
 * It provides port forwards to the connected devices when used as a router.
+* It provides routes definition to other networks.
 * It does not require any complicated configuration or system administration skills; the whole configuration is centralized in a single file.
 * It provides a complete Docker-based runtime environment, with a full set of tools to deploy, run and manage applications.
 * It can be extended at the firmware level or during runtime without affecting the underlying operating system.
@@ -269,6 +270,23 @@ where:
 * `SRC_PORT` is the exposed port on ETH0
 * `DST_IP` is the IP of the device to forward to
 * `DST_PORT` is the port on the device to forward to
+
+### `routes`
+
+You can define routes to other networks modifying the `/iohub/routes` file.
+
+Each line of the file, not starting with a `#`, is a route definition.
+
+The format of the forward definition is:
+
+```bash
+DESTINATION/NETMASK:GATEWAY
+```
+
+where:
+
+* `DESTINATION/NETMASK` is the remote network to reach with CIDR (e.g. 192.168.152.0/24)
+* `GATEWAY` is the IP of the gateway to the remote network
 
 ### Docker Registry
 
@@ -570,6 +588,7 @@ The fourth partition is the writable partition. It is used to store any user dat
    |   |--> forwards-tcp               # tcp forwards definitions
    |   |--> forwards-udp               # udp forwards definitions
    |   |--> live/                      # folder for live configuration. copied over / at boot
+   |   |--> routes                     # routes definitions
    |   |--> runtime/                   # folder for permanent data used by scripts
    |   |   |--> iohub-bootstrap/       # hooks definitions for iohub-boostrap
    |   |   |--> iohub-registry         # folder for Docker registry automatic import

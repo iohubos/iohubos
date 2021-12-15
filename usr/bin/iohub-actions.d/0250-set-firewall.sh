@@ -122,6 +122,21 @@ while IFS= read -r pf ;do
     iptables -A FORWARD -i ${IOHUBOS_INBOUND_DEVICE} -o br1 -p tcp -d ${destination[0]} --dport ${destination[1]} -m conntrack --ctstate NEW -j ACCEPT
 done <<< "${IOHUBOS_FIREWALL_PORT_FORWARDS_UDP}"
 
+[[ -f /iohub/routes ]] && IOHUBOS_ROUTES=$(cat /iohub/routes)
+while IFS= read -r route ;do
+    if [[ "$route" =~ ^\# ]] || [[ "$route" =~ ^[[:space:]]*$ ]]; then
+        continue
+    fi
+
+    mapfile -td \: fields < <(printf "%s\0" "${route}")
+    fields=("${fields[@]%$'\n'}")
+    if [[ ${#fields[@]} -ne 2 ]]; then
+        continue
+    fi
+
+    ip route add ${fields[0]} via ${fields[1]}
+done <<< "${IOHUBOS_ROUTES}"
+
 # masquerade
 iptables -t nat -A POSTROUTING -o ${IOHUBOS_INBOUND_DEVICE} -j MASQUERADE
 if [[ "${IOHUBOS_NETWORK_MODE}" == "router" ]]; then
