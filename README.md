@@ -277,7 +277,7 @@ You can define routes to other networks modifying the `/iohub/routes` file.
 
 Each line of the file, not starting with a `#`, is a route definition.
 
-The format of the forward definition is:
+The format of the route definition is:
 
 ```bash
 DESTINATION/NETMASK:GATEWAY
