@@ -23,3 +23,26 @@ for version in $(ls /usr/lib/iohub/envvars.d/*.*.*-envvars | sort -V); do
         fi
     fi
 done
+
+# prepare base config if missing
+if [[ ! -f /iohub/forwards-tcp ]]; then
+    cat <<EOF >/iohub/forwards-tcp
+# SRC_PORT=DST_IP:DST_PORT
+EOF
+    chmod 644 /iohub/forwards-tcp
+fi
+
+if [[ ! -f /iohub/forwards-udp ]]; then
+    cat <<EOF >/iohub/forwards-udp
+# SRC_PORT=DST_IP:DST_PORT
+EOF
+    chmod 644 /iohub/forwards-udp
+fi
+
+if [[ ! -f /iohub/routes ]]; then
+    cat <<EOF >/iohub/routes
+# DESTINATION/NETMASK:GATEWAY
+# e.g. 192.168.152.0/24:10.11.12.100
+EOF
+    chmod 644 /iohub/routes
+fi
