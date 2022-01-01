@@ -4,82 +4,23 @@ If you prefer building the distro instead of installing it from the official rep
 
 ## Build procedure
 
-The building system has been packaged into a Docker image to make it independent on the OS you are building on (**on Windows, run the command below in PowerShell**).
-
-You need a Docker engine installed on your pc to build the distro.
+You need a Docker engine installed on your pc to build the distro. The building procedure is designed for bash.
 
 The building process will take ~10/20 minutes, depending on your network and hardware speed.
-
-At the end of the process, you will have two files in a folder on your pc
-
-* `installer.img`: the image that can be used to install IOhubOS from scratch.
-* `firmware.tgz`: the firmware that can be used to upgrade/downgrade an existing IOhubOS.
 
 ```bash
 # clone the repository
 git clone git@github.com:ez-vpn/iohubos.git
 cd iohubos
 
-# download the images to embed in the distro
-mkdir registry
-docker run -it --privileged --rm \
-    -v ${PWD}/registry:/dist \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    --mount type=bind,source=${PWD}/assets/img_downloader.sh,target=/img_downloader.sh \
-    --mount type=bind,source=${PWD}/assets/registry,target=/registry \
-    docker /img_downloader.sh
-
-# build the builder image
-docker build --no-cache -t iohubos/iohubos-builder .
-
-# create the destination folder for the image and the firmware
-mkdir dist
-docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubos/iohubos-builder
+# build the distro
+./build.sh
 ```
 
-As long the `iohubos/iohubos-builder` image is available, you can generate the installer and the firmware on need, just repeating the last step (`docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubos/iohubos-builder`).
+At the end of the process, you will have two files in the `dist` folder:
 
-### Additional build parameters
-
-If you want to improve the download speed while building the image, you can force a Debian mirror, for example:
-
-```bash
-docker build --no-cache --build-arg MIRROR=http://ftp.de.debian.org/debian/ -t iohubos/iohubos-builder .
-```
-
-The default value for the `MIRROR` arg is `http://deb.debian.org/debian`
-
-You can change the `registry` folder used below passing a `build-arg REGISTRY` to the image builder:
-
-```bash
-mkdir somefolder
-docker run -it --privileged --rm \
-    -v ${PWD}/somefolder:/dist \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    --mount type=bind,source=${PWD}/assets/img_downloader.sh,target=/img_downloader.sh \
-    --mount type=bind,source=${PWD}/assets/registry,target=/registry \
-    docker /img_downloader.sh
-docker build --no-cache --build-arg REGISTRY=somefolder -t iohubos/iohubos-builder .
-```
-
-### Using the Docker Hub image
-
-We keep up to date the latest `iohubos/iohubos-builder` Docker image on Docker Hub.
-
-You can skip the building process and just use the latest image from Docker Hub:
-
-```bash
-mkdir dist
-docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubos/iohubos-builder
-```
-
-### Clean up
-
-You can delete the Docker image if you want to reclaim the taken space (~5Gb).
-
-```bash
-docker image rm iohubos/iohubos-builder
-```
+* `installer.img`: the image that can be used to install IOhubOS from scratch.
+* `firmware.tgz`: the firmware that can be used to upgrade/downgrade an existing IOhubOS.
 
 ## Flash the installer to a USB stick
 

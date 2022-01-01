@@ -32,9 +32,11 @@ subnet ${IOHUBOS_ETH1_NETWORK} netmask ${IOHUBOS_ETH1_NETMASK} {
     option routers ${IOHUBOS_ETH1_IP};
     option subnet-mask ${IOHUBOS_ETH1_NETMASK};
     range dynamic-bootp ${IOHUBOS_DHCP_SERVER_FROM} ${IOHUBOS_DHCP_SERVER_TO};
-    option domain-name-servers ${IOHUBOS_DHCP_SERVER_DNS};
-}
 EOT
+if [[ "${IOHUBOS_DHCP_SERVER_DNS}" != "" ]]; then
+    echo "    option domain-name-servers ${IOHUBOS_DHCP_SERVER_DNS};" >>/etc/dhcp/dhcpd.conf
+fi
+echo "}" >>/etc/dhcp/dhcpd.conf
 
 cat <<EOT >/etc/default/isc-dhcp-server
 INTERFACESv4="br1"
