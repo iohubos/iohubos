@@ -29,8 +29,8 @@ PrivateKey = ${PRIVATE_KEY}
 Address = ${ADDRESS}/${CIDR}
 SaveConfig = false
 
-PostUp = iptables -t nat -I POSTROUTING -o ${IOHUBOS_ETH0_DEVICE} -j MASQUERADE
-PostDown = iptables -t nat -D POSTROUTING -o ${IOHUBOS_ETH0_DEVICE} -j MASQUERADE
+PostUp = iptables -t nat -I POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
 [Peer]
 PublicKey = ${IOHUBOS_VPN_SERVER_PUBLIC_KEY}
