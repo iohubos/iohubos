@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
-dd if=/dev/zero of=/installer/installer.img bs=80M count=10
+dd if=/dev/zero of=/installer/installer.img bs=100M count=10
 losetup -fP /installer/installer.img
 
 disk=$(losetup -a | grep "/installer/installer.img" | tail -n 1 | cut -d ' ' -f1  | sed 's/.$//')
