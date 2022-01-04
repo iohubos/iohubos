@@ -83,11 +83,11 @@ IOHUBOS_GLOBAL_MQTT_NET="ezvpn-global-mqtt-net" # keep ezvpn-global-mqtt-net to 
 
 IOHUBOS_VPN_ENABLED='false'                 # enable wireguard vpn
 IOHUBOS_VPN_SERVER_PUBLIC_KEY=''            # wireguard server public key
-IOHUBOS_VPN_BOX_NUMBER='5'                  # a number > 1; box progressive number, must be unique for each box and > 1 (1 is the server)
+IOHUBOS_VPN_BOX_NUMBER=''                   # a number > 1; box progressive number, must be unique for each box and > 1 (1 is the server)
 IOHUBOS_VPN_NETWORK=''                      # internal wireguard vpn network, e.g. 100.90.56.0/24
 IOHUBOS_VPN_SERVER_IP_ADDRESS=''            # public server ip address
-IOHUBOS_VPN_SERVER_IP_PORT='30000'          # public server port, e.g. 51820
+IOHUBOS_VPN_SERVER_IP_PORT=''               # public server port, e.g. 51820
 IOHUBOS_VPN_EXPOSE='auto'                   # 'auto' to expose
                                             #     eth0 ip address when in standalone mode
                                             #     eth1 network when in router mode
-                                            # otherwise set manually the set the AllowedIPs
+                                            # otherwise set manually to set the AllowedIPs
