@@ -35,9 +35,9 @@ add_to_ip_address() {
 cidr_by_netmask() {
     local bits=0
 
-    local octet
-    for octet in $(echo $1| sed 's/\./ /g'); do
-         local binbits=$(echo "obase=2; ibase=10; ${octet}"| bc | sed 's/0//g')
+    local byte
+    for byte in $(echo $1 | sed 's/\./ /g'); do
+         local binbits=$(echo "obase=2; ibase=10; ${byte}" | bc | sed 's/0//g')
          let bits+=${#binbits}
     done
     echo -n "${bits}"
@@ -54,4 +54,8 @@ network_by_ip_and_mask() {
     local NM_PART_4=$(echo -n "$2" | cut -d "." -f 4)
 
     echo -n "$(printf "%d.%d.%d.%d\n" "$((IP_PART_1 & NM_PART_1))" "$((IP_PART_2 & NM_PART_2))" "$((IP_PART_3 & NM_PART_3))" "$((IP_PART_4 & NM_PART_4))")"
+}
+
+ipv4_of_dev() {
+    echo -n "$(ip addr show dev $1 | grep "inet " | tr -s ' ' | cut -d " " -f 3)"
 }

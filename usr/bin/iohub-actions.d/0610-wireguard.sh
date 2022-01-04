@@ -37,11 +37,7 @@ PublicKey = ${IOHUBOS_VPN_SERVER_PUBLIC_KEY}
 EOF
 
 if [ "${IOHUBOS_VPN_EXPOSE}" == "auto" ]; then
-    if [ "${IOHUBOS_NETWORK_MODE}" == "standalone" ]; then
-        ALLOWED_IPS=$(ip addr show dev ${IOHUBOS_ETH0_DEVICE} | grep "inet " | tr -s ' ' | cut -d " " -f 3)
-    else
-        ALLOWED_IPS="$(network_by_ip_and_mask ${IOHUBOS_ETH1_IP} ${IOHUBOS_ETH1_NETMASK})/$(cidr_by_netmask ${IOHUBOS_ETH1_NETMASK})"
-    fi
+    ALLOWED_IPS="${NETWORK}/${CIDR}"
 else
     ALLOWED_IPS="${IOHUBOS_VPN_EXPOSE}"
 fi
