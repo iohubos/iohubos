@@ -49,4 +49,4 @@ EOF
 
 docker pull "${IOHUBOS_HOSTNAME}:5000/iohubos/wg-client"
 
-docker run --rm -d --name wg-client -v /etc/wireguard:/work --cap-add=NET_ADMIN --cap-add=SYS_MODULE ${IOHUBOS_HOSTNAME}:5000/iohubos/wg-client
+docker run --rm -d --name wg-client -v /etc/wireguard:/work --privileged ${IOHUBOS_HOSTNAME}:5000/iohubos/wg-client
