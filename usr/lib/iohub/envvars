@@ -78,3 +78,12 @@ IOHUBOS_GLOBAL_MQTT='true'
 IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:5000/iohubos/iohubos-mqtt"
 IOHUBOS_GLOBAL_MQTT_NAME="ezvpn-global-mqtt"    # keep ezvpn-global-mqtt to keep backword compatibility with IOhub global broker definiton
 IOHUBOS_GLOBAL_MQTT_NET="ezvpn-global-mqtt-net" # keep ezvpn-global-mqtt-net to keep backword compatibility with IOhub global broker definiton
+
+## === vpn ===
+IOHUBOS_VPN_ENABLED='false'
+IOHUBOS_VPN_SERVER_PUBLIC_KEY=''
+IOHUBOS_VPN_BOX_NUMBER='5' # >= 0, unique per box
+IOHUBOS_VPN_NETWORK='100.90.56.0/16'
+IOHUBOS_VPN_SERVER_IP_ADDRESS='35.232.235.143'
+IOHUBOS_VPN_SERVER_IP_PORT='30000'
+IOHUBOS_VPN_EXPOSE='auto' # auto, <custom ips>
