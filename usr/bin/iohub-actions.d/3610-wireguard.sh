@@ -49,4 +49,5 @@ EOF
 
 docker pull "${IOHUBOS_HOSTNAME}:5000/iohubos/wg-client"
 
+iptables -A INPUT -i docker0 -j ACCEPT
 docker run --rm -d --name wg-client -v /etc/wireguard:/work --privileged ${IOHUBOS_HOSTNAME}:5000/iohubos/wg-client

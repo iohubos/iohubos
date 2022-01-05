@@ -9,3 +9,4 @@ IOHUBOS_VPN_NETWORK=''                      # internal wireguard vpn network, e.
 IOHUBOS_VPN_SERVER_IP_ADDRESS=''            # public server ip address
 IOHUBOS_VPN_SERVER_IP_PORT=''               # public server port, e.g. 51820
 IOHUBOS_VPN_EXPOSE='auto'                   # 'auto' to expose automatically the wireguard interface, otherwise set manually to set the AllowedIPs
+IOHUBOS_VPN_ACCESS_HOST='false'             # if 'true', access to the IOhubOS host through VPN is granted. Denied otherwise.

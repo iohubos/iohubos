@@ -64,6 +64,11 @@ if [[ "${IOHUBOS_NETWORK_MODE}" == "router" ]] && [[ "${IOHUBOS_DOCKER_REGISTRY_
     iptables -I INPUT -i br1 -p tcp --dport 5000 -j DROP
 fi
 
+# vpn access to host
+if [[ "${IOHUBOS_VPN_ACCESS_HOST}" == "true" ]]; then
+    iptables -I INPUT -i docker0 -j ACCEPT
+fi
+
 ## output rules
 
 # output from router to internet
