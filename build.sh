@@ -38,7 +38,7 @@ docker build --no-cache --build-arg REGISTRY="registry" -t iohubos/iohubos-build
 rm -rf "${DIRNAME}/registry"
 
 # create installer image and firmware
-mkdir dist
+mkdir -p "${DIRNAME}/dist"
 docker run -it --privileged --rm -v ${PWD}/dist:/dist iohubos/iohubos-builder
 
 # clean up

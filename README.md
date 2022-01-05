@@ -584,6 +584,10 @@ The fourth partition is the writable partition. It is used to store any user dat
    |   |   |--> registry/              # internal Docker registry
    |   |--> envvars                    # user environment variables
    |   |--> envvars.d/                 # user environment variables - firmware version specific
+   |   |   |   |--> 1.0.0-envvars.d    # <empty>
+   |   |   |   |--> 1.0.2-envvars.d    # <empty>
+   |   |   |   |--> 1.0.3-envvars.d    # <empty>
+   |   |   |   |--> 1.1.0-envvars.d    # vpn configuration
    |   |--> firmware/                  # folder for automatic firmware deployment
    |   |--> forwards-tcp               # tcp forwards definitions
    |   |--> forwards-udp               # udp forwards definitions
@@ -596,6 +600,9 @@ The fourth partition is the writable partition. It is used to store any user dat
    |--> usr
    |   |--> bin
    |   |   |--> iohub-actions.d        # folder for iohub-bootstrap scripts (read only)
+   |--> usr
+   |   |--> lib
+   |   |   |--> envvars.d/             # folder for specific version default configuration (read only)
 ```
 
 ### Commands reference

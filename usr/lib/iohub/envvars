@@ -78,13 +78,3 @@ IOHUBOS_GLOBAL_MQTT='true'
 IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:5000/iohubos/iohubos-mqtt"
 IOHUBOS_GLOBAL_MQTT_NAME="ezvpn-global-mqtt"    # keep ezvpn-global-mqtt to keep backword compatibility with IOhub global broker definiton
 IOHUBOS_GLOBAL_MQTT_NET="ezvpn-global-mqtt-net" # keep ezvpn-global-mqtt-net to keep backword compatibility with IOhub global broker definiton
-
-## === vpn ===
-
-IOHUBOS_VPN_ENABLED='false'                 # enable wireguard vpn
-IOHUBOS_VPN_SERVER_PUBLIC_KEY=''            # wireguard server public key
-IOHUBOS_VPN_BOX_NUMBER=''                   # a number > 1; must be unique for each box and > 1 (1 is the server)
-IOHUBOS_VPN_NETWORK=''                      # internal wireguard vpn network, e.g. 100.90.56.0/24
-IOHUBOS_VPN_SERVER_IP_ADDRESS=''            # public server ip address
-IOHUBOS_VPN_SERVER_IP_PORT=''               # public server port, e.g. 51820
-IOHUBOS_VPN_EXPOSE='auto'                   # 'auto' to expose automatically the wireguard interface, otherwise set manually to set the AllowedIPs
