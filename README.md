@@ -36,6 +36,7 @@ Its main characteristics are:
 * It provides Docker deployment capability just copying an application to the deployment folder.
 * It provides firmware upgrade/downgrade capability, just copying the firmware to the deployment folder.
 * It provides an administration API to manage the Docker applications deployments.
+* It self configures a wireguard VPN client.
 
 IOhubOS is the Open Source evolution of the proprietary IOhub technology developed by [EZ VPN](https://iohubdocs.ezvpn.online/).
 
@@ -287,6 +288,27 @@ where:
 
 * `DESTINATION/NETMASK` is the remote network to reach with CIDR (e.g. 192.168.152.0/24)
 * `GATEWAY` is the IP of the gateway to the remote network
+
+### VPN
+
+Starting from version 1.1.0, IOhubOS provides auto-configuration to a Wireguard VPN server.
+
+VPN configuration can be found in the `/iohub/envvars.d/1.1.0-envars` file. To enable the VPN, you need to set the variable `IOHUBOS_VPN_ENABLED` to `true`.
+
+```bash
+IOHUBOS_VPN_ENABLED='false'                 # enable wireguard vpn
+IOHUBOS_VPN_SERVER_PUBLIC_KEY=''            # wireguard server public key
+IOHUBOS_VPN_BOX_NUMBER=''                   # a number > 1; must be unique for each box and > 1 (1 is the server)
+IOHUBOS_VPN_NETWORK=''                      # internal wireguard vpn network, e.g. 100.90.56.0/24
+IOHUBOS_VPN_SERVER_IP_ADDRESS=''            # public server ip address
+IOHUBOS_VPN_SERVER_IP_PORT=''               # public server port, e.g. 51820
+IOHUBOS_VPN_EXPOSE='auto'                   # 'auto' to expose automatically the wireguard interface, otherwise set manually to set the AllowedIPs
+IOHUBOS_VPN_ACCESS_HOST='false'             # if 'true', access to the IOhubOS host through VPN is granted. Denied otherwise.
+```
+
+#### VPN configuration examples
+
+TODO
 
 ### Docker Registry
 
