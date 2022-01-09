@@ -1,0 +1,61 @@
+# Copyright 2022 EZ VPN Inc.
+# Author: paolo.denti@gmail.com (Paolo Denti)
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+network_part() {
+    echo -n "$1" | cut -d "/" -f 1
+}
+
+cidr_part() {
+    echo -n "$1" | cut -d "/" -f 2
+}
+
+add_to_ip_address() {
+    local IP_PART_1=$(echo -n "$1" | cut -d "." -f 1)
+    local IP_PART_2=$(echo -n "$1" | cut -d "." -f 2)
+    local IP_PART_3=$(echo -n "$1" | cut -d "." -f 3)
+    local IP_PART_4=$(echo -n "$1" | cut -d "." -f 4)
+    local toadd
+
+    IP_PART_4=$(echo "$2 % 256" | bc)
+
+    toadd=$(echo "$2 / 256" | bc)
+    IP_PART_3=$(echo "(${IP_PART_3} + ${toadd}) % 256" | bc)
+
+    toadd=$(echo "(${IP_PART_3} + ${toadd}) / 256" | bc)
+    IP_PART_2=$(echo "(${IP_PART_2} + ${toadd}) % 256" | bc)
+
+    toadd=$(echo "(${IP_PART_2} + ${toadd}) / 256" | bc)
+    IP_PART_1=$(echo "(${IP_PART_1} + ${toadd}) % 256" | bc)
+
+    echo -n "${IP_PART_1}.${IP_PART_2}.${IP_PART_3}.${IP_PART_4}"
+}
+
+cidr_by_netmask() {
+    local bits=0
+
+    local byte
+    for byte in $(echo $1 | sed 's/\./ /g'); do
+         local binbits=$(echo "obase=2; ibase=10; ${byte}" | bc | sed 's/0//g')
+         let bits+=${#binbits}
+    done
+    echo -n "${bits}"
+}
+
+network_by_ip_and_mask() {
+    local IP_PART_1=$(echo -n "$1" | cut -d "." -f 1)
+    local IP_PART_2=$(echo -n "$1" | cut -d "." -f 2)
+    local IP_PART_3=$(echo -n "$1" | cut -d "." -f 3)
+    local IP_PART_4=$(echo -n "$1" | cut -d "." -f 4)
+    local NM_PART_1=$(echo -n "$2" | cut -d "." -f 1)
+    local NM_PART_2=$(echo -n "$2" | cut -d "." -f 2)
+    local NM_PART_3=$(echo -n "$2" | cut -d "." -f 3)
+    local NM_PART_4=$(echo -n "$2" | cut -d "." -f 4)
+
+    echo -n "$(printf "%d.%d.%d.%d\n" "$((IP_PART_1 & NM_PART_1))" "$((IP_PART_2 & NM_PART_2))" "$((IP_PART_3 & NM_PART_3))" "$((IP_PART_4 & NM_PART_4))")"
+}
+
+ipv4_of_dev() {
+    echo -n "$(ip addr show dev $1 | grep "inet " | tr -s ' ' | cut -d " " -f 3)"
+}

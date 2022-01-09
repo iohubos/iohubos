@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2021 EZ VPN Inc.
+# Copyright 2022 EZ VPN Inc.
 # Author: paolo.denti@gmail.com (Paolo Denti)
 #
 # SPDX-License-Identifier: AGPL-3.0-only
@@ -62,6 +62,11 @@ if [[ "${IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH0}" != "true" ]]; then
 fi
 if [[ "${IOHUBOS_NETWORK_MODE}" == "router" ]] && [[ "${IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH1}" != "true" ]]; then
     iptables -I INPUT -i br1 -p tcp --dport 5000 -j DROP
+fi
+
+# vpn access to host
+if [[ "${IOHUBOS_VPN_ACCESS_HOST}" == "true" ]]; then
+    iptables -I INPUT -i docker0 -j ACCEPT
 fi
 
 ## output rules

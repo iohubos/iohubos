@@ -1,10 +1,14 @@
 #!/bin/bash
-# Copyright 2021 EZ VPN Inc.
+# Copyright 2022 EZ VPN Inc.
 # Author: paolo.denti@gmail.com (Paolo Denti)
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
-dd if=/dev/zero of=/installer/installer.img bs=80M count=10
+# compute space for image
+space=$(du -sh -BM /installer/image 2>/dev/null | tr -s ' ' | cut -f 1 | sed 's/.$//')
+space=$( expr $space + 20 ) # allow space for /boot (~10Mb used + 10Mb safety)
+
+dd if=/dev/zero of=/installer/installer.img bs=1M count=${space}
 losetup -fP /installer/installer.img
 
 disk=$(losetup -a | grep "/installer/installer.img" | tail -n 1 | cut -d ' ' -f1  | sed 's/.$//')
