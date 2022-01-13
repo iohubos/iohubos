@@ -619,12 +619,13 @@ The fourth partition is the writable partition. It is used to store any user dat
    |   |   |--> iohub-bootstrap/       # hooks definitions for iohub-boostrap
    |   |   |--> iohub-registry         # folder for Docker registry automatic import
    |   |--> sysvars                    # system environment variables
+   |   |--> vpn/                       # folder for wireguard keys 
    |--> usr
    |   |--> bin
-   |   |   |--> iohub-actions.d        # folder for iohub-bootstrap scripts (read only)
-   |--> usr
+   |   |   |--> iohub-actions.d/       # folder for iohub-bootstrap scripts (read only)
    |   |--> lib
-   |   |   |--> envvars.d/             # folder for specific version default configuration (read only)
+   |   |   |--> iohub/
+   |   |   |   |--> envvars.d/         # folder for specific version default configuration (read only)
 ```
 
 ### Commands reference
