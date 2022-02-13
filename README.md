@@ -310,6 +310,21 @@ IOHUBOS_VPN_ACCESS_HOST='false'             # if 'true', access to the IOhubOS h
 
 TODO
 
+### Zerotier VPN
+
+Starting from version 1.1.1, IOhubOS provides auto-configuration to Zerotier.
+
+Zerotier configuration can be found in the `/iohub/envvars.d/1.1.1-envars` file. To enable Zerotier, you need to set the variable `IOHUBOS_ZEROTIER_ENABLED` to `true`.
+
+```bash
+IOHUBOS_ZEROTIER_ENABLED='false'                 # enable zerotier
+IOHUBOS_ZEROTIER_NETWORK=''                      # zerotier network id
+```
+
+#### Zerotier configuration examples
+
+TODO
+
 ### Docker Registry
 
 The Docker registry is enabled by default. You can disable it by setting the variable `IOHUBOS_DOCKER_REGISTRY_ENABLED` to `false`.

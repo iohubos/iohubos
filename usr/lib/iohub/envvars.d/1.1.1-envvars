@@ -1,0 +1,6 @@
+# 1.1.1 firmware variables
+
+## === zerotier ===
+
+IOHUBOS_ZEROTIER_ENABLED='false'                 # enable zerotier
+IOHUBOS_ZEROTIER_NETWORK=''                      # zerotier network id
