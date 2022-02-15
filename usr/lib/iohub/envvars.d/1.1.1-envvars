@@ -1,0 +1,24 @@
+# 1.1.1 firmware variables
+
+## === WireGuard ===
+
+## existing variables IOHUBOS_VPN_* from the deprecated 1.1.0-envars are preloaded, for backward compatibility
+## modify directly the values in the IOHUBOS_WIREGUARD_* to avoid using deprecated variables
+
+# load values from deprecated settings file, to allow upgrade
+[[ -f /iohub/envvars.d/1.1.0-envvars ]] && . /iohub/envvars.d/1.1.0-envvars
+
+IOHUBOS_WIREGUARD_ENABLED="${IOHUBOS_VPN_ENABLED:-false}"                 # enable WireGuard vpn
+IOHUBOS_WIREGUARD_SERVER_PUBLIC_KEY="${IOHUBOS_VPN_SERVER_PUBLIC_KEY:-}"  # WireGuard server public key
+IOHUBOS_WIREGUARD_BOX_NUMBER="${IOHUBOS_VPN_BOX_NUMBER:-}"                # a number > 1; must be unique for each box and > 1 (1 is the server)
+IOHUBOS_WIREGUARD_NETWORK="${IOHUBOS_VPN_NETWORK:-}"                      # internal WireGuard vpn network, e.g. 100.90.56.0/24
+IOHUBOS_WIREGUARD_SERVER_IP_ADDRESS="${IOHUBOS_VPN_SERVER_IP_ADDRESS:-}"  # public server ip address
+IOHUBOS_WIREGUARD_SERVER_IP_PORT="${IOHUBOS_VPN_SERVER_IP_PORT:-}"        # public server port, e.g. 51820
+IOHUBOS_WIREGUARD_EXPOSE="${IOHUBOS_VPN_EXPOSE:-auto}"                    # 'auto' to expose automatically the WireGuard interface, otherwise set manually to set the AllowedIPs
+IOHUBOS_WIREGUARD_ACCESS_HOST="${IOHUBOS_VPN_ACCESS_HOST:-false}"         # if 'true', access to the docker services on host ip host is granted.
+
+## === Zerotier ===
+
+IOHUBOS_ZEROTIER_ENABLED='false'                 # enable Zerotier
+IOHUBOS_ZEROTIER_NETWORK=''                      # Zerotier network id
+IOHUBOS_ZEROTIER_ACCESS_HOST='false'             # if 'true', access to the Docker applications on host ip host is granted.

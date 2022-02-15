@@ -65,7 +65,7 @@ if [[ "${IOHUBOS_NETWORK_MODE}" == "router" ]] && [[ "${IOHUBOS_DOCKER_REGISTRY_
 fi
 
 # vpn access to host
-if [[ "${IOHUBOS_VPN_ACCESS_HOST}" == "true" ]]; then
+if [[ ( "${IOHUBOS_WIREGUARD_ENABLED}" == "true" && "${IOHUBOS_WIREGUARD_ACCESS_HOST}" == "true" ) || ( "${IOHUBOS_ZEROTIER_ENABLED}" == "true" && "${IOHUBOS_ZEROTIER_ACCESS_HOST}" == "true" ) ]]; then
     iptables -I INPUT -i docker0 -j ACCEPT
 fi
 
