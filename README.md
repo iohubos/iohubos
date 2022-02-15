@@ -644,6 +644,7 @@ The fourth partition is the writable partition. It is used to store any user dat
    |   |   |   |--> 1.0.2-envvars.d    # <empty>
    |   |   |   |--> 1.0.3-envvars.d    # <empty>
    |   |   |   |--> 1.1.0-envvars.d    # vpn configuration
+   |   |   |   |--> 1.1.1-envvars.d    # WireGuard and Zerotier configuration
    |   |--> firmware/                  # folder for automatic firmware deployment
    |   |--> forwards-tcp               # tcp forwards definitions
    |   |--> forwards-udp               # udp forwards definitions
