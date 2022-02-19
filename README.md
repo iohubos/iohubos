@@ -638,28 +638,28 @@ The fourth partition is the writable partition. It is used to store any user dat
    |   |   |   |--> <app 3>
    |   |   |--> global/                # global applications
    |   |   |--> registry/              # internal Docker registry
-   |   |--> envvars                    # user environment variables
+   |   |--> envvars/                   # user environment variables
    |   |--> envvars.d/                 # user environment variables - firmware version specific
-   |   |   |   |--> 1.0.0-envvars.d    # <empty>
-   |   |   |   |--> 1.0.2-envvars.d    # <empty>
-   |   |   |   |--> 1.0.3-envvars.d    # <empty>
-   |   |   |   |--> 1.1.0-envvars.d    # vpn configuration
-   |   |   |   |--> 1.1.1-envvars.d    # WireGuard and Zerotier configuration
+   |   |   |   |--> 1.0.0-envvars      # <empty>
+   |   |   |   |--> 1.0.2-envvars      # <empty>
+   |   |   |   |--> 1.0.3-envvars      # <empty>
+   |   |   |   |--> 1.1.0-envvars      # vpn configuration
+   |   |   |   |--> 1.1.1-envvars      # WireGuard and Zerotier configuration
    |   |--> firmware/                  # folder for automatic firmware deployment
    |   |--> forwards-tcp               # tcp forwards definitions
    |   |--> forwards-udp               # udp forwards definitions
    |   |--> live/                      # folder for live configuration. copied over / at boot
    |   |--> routes                     # routes definitions
-   |   |--> runtime/                   # folder for permanent data used by scripts
+   |   |--> runtime/                   # folder for permanent data used by scripts/apps
    |   |   |--> iohub-bootstrap/       # hooks definitions for iohub-boostrap
-   |   |   |--> iohub-registry         # folder for Docker registry automatic import
-   |   |   |--> wireguard              # folder for WireGuard keys 
-   |   |   |--> zerotier               # folder for Zerotier configuration
+   |   |   |--> iohub-registry/        # folder for Docker registry automatic import
+   |   |   |--> wireguard/             # folder for WireGuard keys 
+   |   |   |--> zerotier/              # folder for Zerotier configuration
    |   |--> sysvars                    # system environment variables
-   |--> usr
-   |   |--> bin
+   |--> usr/
+   |   |--> bin/
    |   |   |--> iohub-actions.d/       # folder for iohub-bootstrap scripts (read only)
-   |   |--> lib
+   |   |--> lib/
    |   |   |--> iohub/
    |   |   |   |--> envvars.d/         # folder for specific version default configuration (read only)
 ```
