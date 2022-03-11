@@ -348,6 +348,13 @@ IOHUBOS_ZEROTIER_ACCESS_HOST='false'             # if 'true', access to the Dock
 
 TODO
 
+### Customize the distro
+
+You can add your own customizations to the distro creating the folder `custom` at the top level of the repo and adding files in it.
+
+During the OS installation, if the folder `custom` exists, it's content will be copied in the `/` directory of the IOhubOS distro.
+Existing files with the same path will be overwritten.
+
 ### Docker Registry
 
 The Docker registry is enabled by default. You can disable it by setting the variable `IOHUBOS_DOCKER_REGISTRY_ENABLED` to `false`.

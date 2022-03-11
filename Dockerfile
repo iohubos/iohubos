@@ -1,10 +1,11 @@
 FROM debian:11.1
 
-ENV IOHUBOS_VERSION=1.1.1
+ENV IOHUBOS_VERSION=1.1.2
 ENV SUITE=bullseye
 ENV WORK=/work
 
 ARG REGISTRY=registry
+ARG CUSTOM=custom
 ARG MIRROR=http://deb.debian.org/debian
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \

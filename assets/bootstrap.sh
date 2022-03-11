@@ -22,6 +22,8 @@ mkdir -p $WORK/LIVE_BOOT/chroot/var/lib/images
 find $WORK/LIVE_BOOT/chroot/var/log -type f -exec cp /dev/null {} \;
 rm -rf $WORK/LIVE_BOOT/chroot/var/log/journal/* $WORK/LIVE_BOOT/chroot/var/log/apt/*
 rm -rf $WORK/LIVE_BOOT/chroot/usr/src/iohubos && cat /dev/null > $WORK/LIVE_BOOT/chroot/root/.bash_history
+# copy custom distro files
+[ -d "${WORK}/iohubos/${CUSTOM}" ] && rsync -rtv ${WORK}/iohubos/${CUSTOM}/ $WORK/LIVE_BOOT/chroot/
 
 # package into squashfs
 mkdir -p $WORK/LIVE_BOOT/image/live
