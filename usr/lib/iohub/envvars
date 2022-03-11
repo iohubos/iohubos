@@ -65,6 +65,7 @@ IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH0='false'     # registry accessible on eth0 si
 IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH1='false'     # registry accessible on eth1 side
 IOHUBOS_DOCKER_REGISTRY_RESCAN='true'           # force reload images from /var/lib/images at every restart
 IOHUBOS_DOCKER_REGISTRY_RESCAN_DELETE='true'    # delete the image after the import in the registry
+IOHUBOS_DOCKER_REGISTRY_PORT='5000'             # docker registry port
 
 ## === admin api ===
 
@@ -75,6 +76,6 @@ IOHUBOS_ADMIN_API_AUTH_TOKEN=''             # header auth token - must be at lea
 ## === IOhub compatibility layer ===
 
 IOHUBOS_GLOBAL_MQTT='true'
-IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:5000/iohubos/iohubos-mqtt"
+IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:${IOHUBOS_DOCKER_REGISTRY_PORT}/iohubos/iohubos-mqtt"
 IOHUBOS_GLOBAL_MQTT_NAME="ezvpn-global-mqtt"    # keep ezvpn-global-mqtt to keep backword compatibility with IOhub global broker definiton
 IOHUBOS_GLOBAL_MQTT_NET="ezvpn-global-mqtt-net" # keep ezvpn-global-mqtt-net to keep backword compatibility with IOhub global broker definiton

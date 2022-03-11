@@ -18,7 +18,7 @@ importImage () {
             continue
         fi
 
-        local localtag="${IOHUBOS_HOSTNAME}:5000/${tag}"
+        local localtag="${IOHUBOS_HOSTNAME}:${IOHUBOS_DOCKER_REGISTRY_PORT}/${tag}"
         docker tag ${tag} ${localtag}
         docker push ${localtag}
         docker image rm ${tag}
@@ -31,7 +31,7 @@ waitForRegistry() {
 
     local ATTEMPTS=0
     while : ; do
-        local httpcode=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:5000/v2/_catalog")
+        local httpcode=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:${IOHUBOS_DOCKER_REGISTRY_PORT}/v2/_catalog")
         if [[ "${httpcode}" == "200" ]]; then
             break
         fi
@@ -69,7 +69,7 @@ fi
 # start registry
 docker run \
     --rm -d \
-    -p 5000:5000 \
+    -p ${IOHUBOS_DOCKER_REGISTRY_PORT}:5000 \
     -v /iohub/docker/registry:/var/lib/registry \
     --network=iohubos-registry-net \
     --name=iohubos-registry registry:2
