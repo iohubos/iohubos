@@ -217,6 +217,10 @@ The Docker images embedded in the firmware are by default already available in t
 
 You can expose the internal Docker registry on ETH0 or ETH1 by setting to `true` the variables `IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH0` and `IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH1`.
 
+You can change the default registry port (5000 by default) by setting the `IOHUBOS_DOCKER_REGISTRY_PORT` variable.
+
+**`IOHUBOS_DOCKER_REGISTRY_PORT` has been introduced in version 1.1.2**. In the previous versions it is not used.
+
 #### Admin API
 
 You can enable an administration API. The Admin API allows you to manage the installed Docker applications, as fully described [`here`](https://github.com/iohubos/iohubos-admin-api).
@@ -528,7 +532,7 @@ The applications created with EZ VPN IOhub are compatible with the IOhubOS. If a
 
 ```bash
 IOHUBOS_GLOBAL_MQTT='true'
-IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:5000/iohubos/iohubos-mqtt"
+IOHUBOS_GLOBAL_MQTT_IMG="${IOHUBOS_HOSTNAME}:${IOHUBOS_DOCKER_REGISTRY_PORT}/iohubos/iohubos-mqtt"
 IOHUBOS_GLOBAL_MQTT_NAME="ezvpn-global-mqtt"
 IOHUBOS_GLOBAL_MQTT_NET="ezvpn-global-mqtt-net"
 ```

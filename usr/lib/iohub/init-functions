@@ -7,6 +7,10 @@ getVersion() {
     echo "$@" | awk -F. '{ printf("%d%05d%05d%05d\n", $1,$2,$3,$4); }'
 }
 
+setDefaults() {
+    IOHUBOS_DOCKER_REGISTRY_PORT="${IOHUBOS_DOCKER_REGISTRY_PORT:-5000}"
+}
+
 load_vars() {
     [ -f /usr/lib/iohub/version ] && . /usr/lib/iohub/version
     [ -f /iohub/sysvars ] && . /iohub/sysvars
@@ -25,4 +29,6 @@ load_vars() {
             fi
         done
     fi
+
+    setDefaults
 }

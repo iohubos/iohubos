@@ -58,10 +58,10 @@ fi
 
 # docker registry
 if [[ "${IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH0}" != "true" ]]; then
-    iptables -I FORWARD -i ${IOHUBOS_INBOUND_DEVICE} -p tcp --dport 5000 -j DROP
+    iptables -I FORWARD -i ${IOHUBOS_INBOUND_DEVICE} -p tcp --dport ${IOHUBOS_DOCKER_REGISTRY_PORT} -j DROP
 fi
 if [[ "${IOHUBOS_NETWORK_MODE}" == "router" ]] && [[ "${IOHUBOS_DOCKER_REGISTRY_EXPOSE_ETH1}" != "true" ]]; then
-    iptables -I INPUT -i br1 -p tcp --dport 5000 -j DROP
+    iptables -I INPUT -i br1 -p tcp --dport ${IOHUBOS_DOCKER_REGISTRY_PORT} -j DROP
 fi
 
 # vpn access to host
