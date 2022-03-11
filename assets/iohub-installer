@@ -143,14 +143,14 @@ echo -e "${grn}... ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 ...moun
 echo -e "${yel}transferring firmware onto ${disk}${devicePostfix}2 ...${end}"
 tar zxf ${firmware} -C /mnt/iohubboot1
 version1=$(cat /mnt/iohubboot1/VERSION)
+echo -e "${grn}... firmware ${version1} onto ${disk}${devicePostfix}2 transferred${end}\n"
 
 echo -e "${yel}transferring firmware onto ${disk}${devicePostfix}3 ...${end}"
 tar zxf ${firmware} -C /mnt/iohubboot2
 version2=$(cat /mnt/iohubboot2/VERSION)
+echo -e "${grn}... firmware ${version2} on ${disk}${devicePostfix}3 transferred${end}\n"
 
 cd /
-echo -e "${grn}... firmware ${version1} on ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 transferred${end}\n"
-
 echo -e "${yel}umounting ${disk}${devicePostfix}2 and ${disk}${devicePostfix}3 ...${end}"
 umount /mnt/{iohubboot1,iohubboot2}
 rmdir /mnt/{iohubboot1,iohubboot2}
