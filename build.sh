@@ -34,7 +34,10 @@ do
 done
 
 # create builder image
-docker build --no-cache --build-arg REGISTRY="registry" -t iohubos/iohubos-builder .
+docker build --no-cache \
+    --build-arg MIRROR="${DEB_MIRROR:-http://deb.debian.org/debian}" \
+    --progress="${PROGRESS:-auto}" \
+    -t iohubos/iohubos-builder .
 rm -rf "${DIRNAME}/registry"
 
 # create installer image and firmware
