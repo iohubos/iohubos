@@ -5,6 +5,10 @@
 [![License](https://img.shields.io/github/license/iohubos/iohubos.svg)](LICENSE)
 [![CircleCI Build Status](https://circleci.com/gh/iohubos/iohubos/tree/master.svg?style=shield)](https://circleci.com/gh/iohubos/iohubos/tree/master)
 
+## Dirty Pipe vulnerability update
+
+Release 1.1.3 has been updated to fix a vulnerability in the dirty pipe attack.
+
 ## Introduction
 
 IOhubOS is a Linux-based distro designed for Industrial and IIoT environments,

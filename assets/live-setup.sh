@@ -18,6 +18,27 @@ EOT
 
 DEBIAN_FRONTEND=noninteractive apt-get update
 
+# Start Kernel upgrade for dirty pipe
+echo "deb http://deb.debian.org/debian unstable main contrib non-free" | tee -a /etc/apt/sources.list
+echo "deb-src http://deb.debian.org/debian unstable main contrib non-free" | tee -a /etc/apt/sources.list
+cat <<EOF >/etc/apt/preferences
+Package: *
+Pin: release a=${SUITE}
+Pin-Priority: 500
+
+Package: linux-image-amd64
+Pin: release a=unstable
+Pin-Priority: 1000
+
+Package: *
+Pin: release a=unstable
+Pin-Priority: 100
+EOF
+
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+# End Kernel upgrade for dirty pipe
+
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     linux-image-amd64 \
     live-boot \

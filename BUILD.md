@@ -69,6 +69,22 @@ The name of the file (`0050-load-custom-firmware.sh`) is arbitrary, but it must 
 
 The file's name determines the execution order of the scripts in the folder `/usr/bin/iohub-actions.d`. Its name should have an ordering such that it precedes all the other scripts depending on the module.
 
+### Change Debian mirror
+
+The default debian mirror is `http://deb.debian.org/debian`. If you want to use a different mirror, you can pass the `DEB_MIRROR` environment variable to the `build.sh` script:
+
+```bash
+DEB_MIRROR="http://ftp.de.debian.org/debian" ./build.sh
+```
+
+### Logging
+
+You can enable the standard logging during the image build in the following way:
+
+```bash
+PROGRESS=plain ./build.sh
+```
+
 ### Embed additional Docker images
 
 If you need to embed additional Docker images in the firmware, and therefore available even when disconnected from the internet, you can do so by adding an image per line to the `assets/registry`, e.g.:
