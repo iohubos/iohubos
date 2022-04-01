@@ -7,7 +7,7 @@
 
 ## Dirty Pipe vulnerability update
 
-Release 1.1.3 is a maintnance release, with just a kernel upgrade, to address the kernel vulnerability CVE-2022-0847, know as dirty pipe.
+Release 1.1.3 is a maintenance release, bringing a kernel upgrade, to address the kernel vulnerability CVE-2022-0847, know as dirty pipe.
 
 ## Introduction
 
